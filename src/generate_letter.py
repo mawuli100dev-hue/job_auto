@@ -50,14 +50,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-DEFAULT_MODEL = "openai/gpt-4o"
+DEFAULT_MODEL = "openai/gpt-4o-mini"
 
 MOIS_FR = [
     "janvier", "février", "mars", "avril", "mai", "juin",
     "juillet", "août", "septembre", "octobre", "novembre", "décembre",
 ]
 
-MOTS_CIBLE_MIN = 550
+MOTS_CIBLE_MIN = 590
 MOTS_CIBLE_MAX = 650
 SEUIL_QUALITE = 8.5
 
