@@ -1,0 +1,135 @@
+{
+  "offer_id": "6280599",
+  "offer": {
+    "intitule": "Architecte logiciel et développement applicatif (H/F)",
+    "entreprise": "Non précisé",
+    "lieu": "75 - Paris 9e Arrondissement",
+    "url": "https://candidat.francetravail.fr/offres/recherche/detail/6280599"
+  },
+  "sous_titre_cv": "Candidature pour l'alternance d'architecte logiciel, disponible à partir de septembre 2026",
+  "experiences_sur_cv": [
+    {
+      "id": "tuteur_informatique",
+      "on_cv": true,
+      "toujours_inclure": true,
+      "start_date": "2026-09",
+      "titre": "Tuteur en informatique",
+      "structure": "IUT de Perpignan, Antenne de Carcassonne",
+      "periode": "Depuis septembre 2026",
+      "tags": [
+        "python",
+        "r",
+        "pedagogie",
+        "encadrement",
+        "enseignement",
+        "programmation"
+      ],
+      "bullets": [
+        "Accompagnement pédagogique des étudiants de BUT SD en **programmation Python, R** et autres langages"
+      ]
+    },
+    {
+      "id": "extase_home",
+      "on_cv": false,
+      "start_date": "2024-01",
+      "titre": "Extase-Home - Plateforme de gestion locative",
+      "structure_type": "Projet freelance",
+      "structure": "Client indépendant, Lomé, Togo",
+      "periode": "2023 - 2025",
+      "tags": [
+        "nextjs",
+        "nestjs",
+        "fullstack",
+        "api rest",
+        "postgresql",
+        "gestion de projet",
+        "developpement web"
+      ],
+      "bullets": [
+        "Conception et développement d'une **plateforme fullstack** de gestion locative pour un parc de plus de 25 propriétés",
+        "Développement de modules de suivi des paiements, messagerie intégrée et partage de documents entre propriétaire et locataires",
+        "Réduction estimée de **70% du temps de gestion** administrative et diminution des impayés grâce à un suivi automatisé",
+        "Architecture **API RESTful** avec base de données relationnelle et authentification sécurisée"
+      ]
+    },
+    {
+      "id": "api_bible",
+      "on_cv": false,
+      "start_date": "2023-06",
+      "titre": "API Bible Digital - Plateforme de lecture biblique",
+      "structure_type": "Projet personnel",
+      "structure": "Développement indépendant, Lomé, Togo",
+      "periode": "2023 - 2025",
+      "tags": [
+        "api rest",
+        "nestjs",
+        "backend",
+        "developpement web",
+        "postgresql"
+      ],
+      "bullets": [
+        "Conception d'une **API RESTful** pour une application de lecture biblique destinée à remplacer les supports papier traditionnels",
+        "Développement de fonctionnalités de recherche avancée, rappels de lecture et gestion de marque-pages",
+        "Mise en place d'une gestion de contenus structurée avec base de données relationnelle",
+        "Contribution à une hausse estimée de **60% de l'engagement utilisateur** par rapport aux supports papier"
+      ]
+    },
+    {
+      "id": "ecommerce_multitenant",
+      "on_cv": false,
+      "start_date": "2023-01",
+      "titre": "API E-commerce Multi-Tenant",
+      "structure_type": "Projet personnel",
+      "structure": "Développement indépendant",
+      "periode": "2023 - 2025",
+      "tags": [
+        "api rest",
+        "architecture logicielle",
+        "microservices",
+        "backend",
+        "multi-tenant",
+        "developpement web"
+      ],
+      "bullets": [
+        "Développement d'une **API e-commerce multi-tenant** permettant à plusieurs commerçants de gérer leur boutique sur une même plateforme",
+        "Conception d'une **architecture modulaire** avec isolation stricte des données par commerçant",
+        "Mise en place d'un écosystème mutualisé réduisant les coûts d'infrastructure pour les petits commerçants",
+        "Gestion des rôles, des permissions et de la sécurité des accès par tenant"
+      ]
+    }
+  ],
+  "competences_sur_cv": {
+    "Langages": [
+      "Python, R",
+      "Java, PHP, JavaScript, TypeScript",
+      "C, C++",
+      "VBA"
+    ],
+    "Outils": [
+      "Power BI, Excel, FME",
+      "GitHub, GitHub Actions, Docker, Linux",
+      "Nest.js, Next.js, Streamlit, Flask",
+      "QGIS, ArcGIS, N8N, Matlab"
+    ],
+    "Atouts": [
+      "Permis de conduire B",
+      "Rigueur et autonomie technique",
+      "Esprit de synthèse et d'analyse",
+      "Aisance à l'oral et en présentation",
+      "Développement de solutions automatisées"
+    ],
+    "Bases de données": [
+      "PostgreSQL",
+      "MySQL",
+      "Oracle"
+    ],
+    "Langues": [
+      "Anglais: niveau B2",
+      "Allemand: Goethe Zertifikat B2"
+    ],
+    "Loisirs": [
+      "Guitare basse et du tuba",
+      "Cuisine : pâtisserie"
+    ]
+  }
+}

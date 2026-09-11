@@ -1,0 +1,134 @@
+{
+  "offer_id": "6280613",
+  "offer": {
+    "intitule": "Développeur d'applications (H/F)",
+    "entreprise": "Non précisé",
+    "lieu": "75 - Paris 9e Arrondissement",
+    "url": "https://candidat.francetravail.fr/offres/recherche/detail/6280613"
+  },
+  "sous_titre_cv": "Candidature pour le poste de Développeur d'applications en alternance, disponible à partir de septembre 2026",
+  "experiences_sur_cv": [
+    {
+      "id": "tuteur_informatique",
+      "on_cv": true,
+      "toujours_inclure": true,
+      "start_date": "2026-09",
+      "titre": "Tuteur en informatique",
+      "structure": "IUT de Perpignan, Antenne de Carcassonne",
+      "periode": "Depuis septembre 2026",
+      "tags": [
+        "python",
+        "r",
+        "pedagogie",
+        "encadrement",
+        "enseignement",
+        "programmation"
+      ],
+      "bullets": [
+        "Accompagnement pédagogique des étudiants de BUT SD en **programmation Python, R** et autres langages"
+      ]
+    },
+    {
+      "id": "extase_home",
+      "on_cv": false,
+      "start_date": "2024-01",
+      "titre": "Extase-Home - Plateforme de gestion locative",
+      "structure_type": "Projet freelance",
+      "structure": "Client indépendant, Lomé, Togo",
+      "periode": "2023 - 2025",
+      "tags": [
+        "nextjs",
+        "nestjs",
+        "fullstack",
+        "api rest",
+        "postgresql",
+        "gestion de projet",
+        "developpement web"
+      ],
+      "bullets": [
+        "Conception et développement d'une **plateforme fullstack** de gestion locative pour un parc de plus de 25 propriétés",
+        "Développement de modules de suivi des paiements, messagerie intégrée et partage de documents entre propriétaire et locataires",
+        "Réduction estimée de **70% du temps de gestion** administrative et diminution des impayés grâce à un suivi automatisé",
+        "Architecture **API RESTful** avec base de données relationnelle et authentification sécurisée"
+      ]
+    },
+    {
+      "id": "tournoi_amitie",
+      "on_cv": false,
+      "start_date": "2024-01",
+      "titre": "Tournoi de l'Amitié - Plateforme de gestion de tournois de football",
+      "structure_type": "Projet freelance",
+      "structure": "Organisation d'un tournoi annuel, Lomé, Togo",
+      "periode": "2023 - 2025",
+      "tags": [
+        "nextjs",
+        "fullstack",
+        "api rest",
+        "developpement web",
+        "gestion de projet"
+      ],
+      "bullets": [
+        "Développement d'une **plateforme web** de digitalisation d'un tournoi de football annuel",
+        "Mise en place d'un système d'inscription des équipes, de gestion des matchs et de suivi des statistiques en temps réel",
+        "Interface publique de suivi en direct pour les spectateurs, contribuant à l'augmentation de la visibilité de l'événement",
+        "Développement fullstack complet, du modèle de données à l'interface utilisateur"
+      ]
+    },
+    {
+      "id": "api_bible",
+      "on_cv": false,
+      "start_date": "2023-06",
+      "titre": "API Bible Digital - Plateforme de lecture biblique",
+      "structure_type": "Projet personnel",
+      "structure": "Développement indépendant, Lomé, Togo",
+      "periode": "2023 - 2025",
+      "tags": [
+        "api rest",
+        "nestjs",
+        "backend",
+        "developpement web",
+        "postgresql"
+      ],
+      "bullets": [
+        "Conception d'une **API RESTful** pour une application de lecture biblique destinée à remplacer les supports papier traditionnels",
+        "Développement de fonctionnalités de recherche avancée, rappels de lecture et gestion de marque-pages",
+        "Mise en place d'une gestion de contenus structurée avec base de données relationnelle",
+        "Contribution à une hausse estimée de **60% de l'engagement utilisateur** par rapport aux supports papier"
+      ]
+    }
+  ],
+  "competences_sur_cv": {
+    "Langages": [
+      "Python, R",
+      "Java, PHP, JavaScript, TypeScript",
+      "SQL",
+      "C, C++"
+    ],
+    "Outils": [
+      "Power BI, Excel, FME",
+      "Nest.js, Next.js, Streamlit, Flask",
+      "GitHub, GitHub Actions, Docker, Linux",
+      "QGIS, ArcGIS, N8N, Matlab"
+    ],
+    "Atouts": [
+      "Permis de conduire B",
+      "Rigueur et autonomie technique",
+      "Documentation technique et fonctionnelle",
+      "Aisance à l'oral et en présentation",
+      "Développement de solutions automatisées"
+    ],
+    "Bases de données": [
+      "PostgreSQL",
+      "MySQL",
+      "Oracle"
+    ],
+    "Langues": [
+      "Anglais: niveau B2",
+      "Allemand: Goethe Zertifikat B2"
+    ],
+    "Loisirs": [
+      "Guitare basse et du tuba",
+      "Cuisine : pâtisserie"
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "offer_id": "6280640",
+  "offer": {
+    "intitule": "Architecte IoT (H/F)",
+    "entreprise": "Non précisé",
+    "lieu": "75 - Paris 9e Arrondissement",
+    "url": "https://candidat.francetravail.fr/offres/recherche/detail/6280640"
+  },
+  "sous_titre_cv": "Candidature pour le poste d'Architecte IoT en alternance, disponible à partir de septembre 2026",
+  "experiences_sur_cv": [
+    {
+      "id": "tuteur_informatique",
+      "on_cv": true,
+      "toujours_inclure": true,
+      "start_date": "2026-09",
+      "titre": "Tuteur en informatique",
+      "structure": "IUT de Perpignan, Antenne de Carcassonne",
+      "periode": "Depuis septembre 2026",
+      "tags": [
+        "python",
+        "r",
+        "pedagogie",
+        "encadrement",
+        "enseignement",
+        "programmation"
+      ],
+      "bullets": [
+        "Accompagnement pédagogique des étudiants de BUT SD en **programmation Python, R** et autres langages"
+      ]
+    },
+    {
+      "id": "spam_nlp_from_scratch",
+      "on_cv": false,
+      "start_date": "2025-09",
+      "titre": "Détection de spam : NLP et régression logistique from scratch",
+      "structure_type": "Projet personnel de machine learning",
+      "structure": "Développement indépendant",
+      "periode": "2025 - 2026",
+      "tags": [
+        "nlp",
+        "machine learning",
+        "python",
+        "regression logistique",
+        "traitement de texte",
+        "from scratch"
+      ],
+      "bullets": [
+        "Implémentation **manuelle en Python** d'un classifieur binaire spam/ham, sans bibliothèque de ML haut niveau",
+        "Construction d'un pipeline complet de **prétraitement textuel (NLP)** : tokenisation, nettoyage, vectorisation",
+        "Développement d'un algorithme de **régression logistique from scratch**, incluant la descente de gradient",
+        "Démarche pédagogique visant à comprendre en profondeur le fonctionnement mathématique des modèles de classification"
+      ]
+    },
+    {
+      "id": "extase_home",
+      "on_cv": false,
+      "start_date": "2024-01",
+      "titre": "Extase-Home - Plateforme de gestion locative",
+      "structure_type": "Projet freelance",
+      "structure": "Client indépendant, Lomé, Togo",
+      "periode": "2023 - 2025",
+      "tags": [
+        "nextjs",
+        "nestjs",
+        "fullstack",
+        "api rest",
+        "postgresql",
+        "gestion de projet",
+        "developpement web"
+      ],
+      "bullets": [
+        "Conception et développement d'une **plateforme fullstack** de gestion locative pour un parc de plus de 25 propriétés",
+        "Développement de modules de suivi des paiements, messagerie intégrée et partage de documents entre propriétaire et locataires",
+        "Réduction estimée de **70% du temps de gestion** administrative et diminution des impayés grâce à un suivi automatisé",
+        "Architecture **API RESTful** avec base de données relationnelle et authentification sécurisée"
+      ]
+    },
+    {
+      "id": "api_bible",
+      "on_cv": false,
+      "start_date": "2023-06",
+      "titre": "API Bible Digital - Plateforme de lecture biblique",
+      "structure_type": "Projet personnel",
+      "structure": "Développement indépendant, Lomé, Togo",
+      "periode": "2023 - 2025",
+      "tags": [
+        "api rest",
+        "nestjs",
+        "backend",
+        "developpement web",
+        "postgresql"
+      ],
+      "bullets": [
+        "Conception d'une **API RESTful** pour une application de lecture biblique destinée à remplacer les supports papier traditionnels",
+        "Développement de fonctionnalités de recherche avancée, rappels de lecture et gestion de marque-pages",
+        "Mise en place d'une gestion de contenus structurée avec base de données relationnelle",
+        "Contribution à une hausse estimée de **60% de l'engagement utilisateur** par rapport aux supports papier"
+      ]
+    }
+  ],
+  "competences_sur_cv": {
+    "Langages": [
+      "Python, R",
+      "Java, PHP, JavaScript, TypeScript",
+      "C, C++",
+      "VBA"
+    ],
+    "Outils": [
+      "Power BI, Excel, FME",
+      "Nest.js, Next.js, Streamlit, Flask",
+      "GitHub, GitHub Actions, Docker, Linux",
+      "QGIS, ArcGIS, N8N, Matlab"
+    ],
+    "Atouts": [
+      "Permis de conduire B",
+      "Rigueur et autonomie technique",
+      "Aisance à l'oral et en présentation",
+      "Organisation et gestion de projet",
+      "Documentation technique et fonctionnelle"
+    ],
+    "Bases de données": [
+      "PostgreSQL",
+      "MySQL",
+      "Oracle"
+    ],
+    "Langues": [
+      "Anglais: niveau B2",
+      "Allemand: Goethe Zertifikat B2"
+    ],
+    "Loisirs": [
+      "Guitare basse et du tuba",
+      "Cuisine : pâtisserie"
+    ]
+  }
+}

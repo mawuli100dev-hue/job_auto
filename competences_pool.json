@@ -1,0 +1,73 @@
+{
+  "Langages": {
+    "slots_total": 4,
+    "toujours": [
+      { "item": "Python, R", "tags": ["python", "r "] }
+    ],
+    "swappable": [
+      { "id": "lang_java_js_ts", "item": "Java, PHP, JavaScript, TypeScript", "tags": ["java", "php", "javascript", "typescript", "js", "ts", "node"] },
+      { "id": "lang_c_cpp", "item": "C, C++", "tags": ["c++", "langage c", "programmation c"] },
+      { "id": "lang_vba", "item": "VBA", "tags": ["vba", "macros excel", "visual basic"] },
+      { "id": "lang_sql", "item": "SQL", "tags": ["sql", "requete sql", "requetes sql", "requêtes sql", "langage sql"] }
+    ]
+  },
+  "Outils": {
+    "slots_total": 4,
+    "toujours": [
+      { "item": "Power BI, Excel, FME", "tags": ["power bi", "powerbi", "excel", "fme"] }
+    ],
+    "swappable": [
+      { "id": "outils_web", "item": "Nest.js, Next.js, Streamlit, Flask", "tags": ["nest.js", "next.js", "streamlit", "flask", "framework web", "application web"] },
+      { "id": "outils_devops", "item": "GitHub, GitHub Actions, Docker, Linux", "tags": ["github", "git", "docker", "linux", "ci/cd", "versioning", "conteneurisation"] },
+      { "id": "outils_sig", "item": "QGIS, ArcGIS, N8N, Matlab", "tags": ["qgis", "arcgis", "n8n", "matlab", "sig", "systeme d'information geographique"] },
+      { "id": "outils_azure", "item": "Microsoft Azure, Microsoft Fabric, Lakehouse", "tags": ["azure", "microsoft fabric", "lakehouse", "cloud microsoft", "environnement microsoft 365", "office 365"] },
+      { "id": "outils_powerquery", "item": "Power Query, DAX, Copilot Studio", "tags": ["power query", "dax", "copilot studio", "copilot", "intelligence artificielle microsoft"] },
+      { "id": "outils_excel_avance", "item": "Excel avancé", "tags": ["excel avance", "excel avancé", "tableau croise dynamique", "tcd", "formules excel", "excel expert"] },
+      { "id": "outils_erp", "item": "ERP, gestion de bases de données fournisseurs", "tags": ["erp", "gestion des stocks", "supply chain", "gestion fournisseurs"] }
+    ]
+  },
+  "Atouts": {
+    "slots_total": 5,
+    "toujours": [
+      { "id": "atout_permis", "item": "Permis de conduire B", "tags": ["permis b", "permis de conduire"] },
+      { "item": "Rigueur et autonomie technique", "tags": ["rigueur", "autonomie"] }
+    ],
+    "swappable": [
+      { "id": "atout_oral", "item": "Aisance à l'oral et en présentation", "tags": ["oral", "presentation", "communication", "ecoute active", "bon relationnel"] },
+      { "id": "atout_automatisation", "item": "Développement de solutions automatisées", "tags": ["automatisation", "solutions automatisees", "automatiser"] },
+      { "id": "atout_cartographie", "item": "Cartographie et visualisation de données", "tags": ["cartographie", "visualisation", "geospatial", "data visualisation"] },
+      { "id": "atout_synthese", "item": "Esprit de synthèse et d'analyse", "tags": ["synthese", "esprit d'analyse", "esprit de synthese"] },
+      { "id": "atout_organisation", "item": "Organisation et gestion de projet", "tags": ["organisation", "gestion de projet", "organise", "planification"] },
+      { "id": "atout_documentation", "item": "Documentation technique et fonctionnelle", "tags": ["documentation", "guides utilisateurs", "documentation fonctionnelle", "documentation technique"] },
+      { "id": "atout_confidentialite", "item": "Respect de la confidentialité et sécurité des données", "tags": ["confidentialite", "securite des donnees", "droits d'acces", "rgpd"] }
+    ]
+  },
+  "Bases de données": {
+    "slots_total": 3,
+    "toujours": [
+      { "item": "PostgreSQL", "tags": ["postgresql", "postgres"] }
+    ],
+    "swappable": [
+      { "id": "bdd_mysql", "item": "MySQL", "tags": ["mysql"] },
+      { "id": "bdd_oracle", "item": "Oracle", "tags": ["oracle"] },
+      { "id": "bdd_sqlserver", "item": "SQL Server / Microsoft SQL", "tags": ["sql server", "microsoft sql", "mssql", "base de donnees microsoft"] }
+    ]
+  },
+  "Langues": {
+    "slots_total": 2,
+    "toujours": [
+      { "item": "Anglais: niveau B2", "tags": ["anglais", "english"] }
+    ],
+    "swappable": [
+      { "id": "langue_allemand", "item": "Allemand: Goethe Zertifikat B2", "tags": ["allemand", "deutsch", "german"] }
+    ]
+  },
+  "Loisirs": {
+    "slots_total": 2,
+    "toujours": [],
+    "swappable": [
+      { "id": "loisir_musique", "item": "Guitare basse et du tuba", "tags": [] },
+      { "id": "loisir_cuisine", "item": "Cuisine : pâtisserie", "tags": [] }
+    ]
+  }
+}

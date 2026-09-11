@@ -1,0 +1,6 @@
+python src\collect_offers.py --keywords-list "data,data analyst,data scientist,data engineer,business intelligence,machine learning,intelligence artificielle, IA, AI" --max-anciennete-jours 3
+
+
+python src/filter_alternance.py --input "data\offres\2026-09-11\offres_2026-09-11_130523.csv" --exclude-entreprises "ISCOD,OPENCLASSROOMS"  
+
+.\run_pipeline.ps1 -CsvPath "data\offres_filtrees\2026-09-11\offres_filtrees_2026-09-11_130657.csv" -PauseTousLesXOffres 3 -DureePauseLongueSec 30  

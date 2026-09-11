@@ -1,0 +1,139 @@
+{
+  "offer": {
+    "intitule": "Offre d'alternance - Ingénieur IA Optimisation des algorithmes d'IA appliqués à l'identification des polymères par imagerie hyperspectrale (H/F)",
+    "entreprise": "Plas'tri",
+    "lieu": "42 - Saint-Étienne",
+    "url": "https://candidat.francetravail.fr/offres/recherche/detail/6531772"
+  },
+  "matrix": {
+    "besoins_prioritaires": [
+      "Optimisation des modèles existants pour améliorer les performances d'identification des polymères",
+      "Développement de nouveaux algorithmes répondant aux besoins spécifiques de nos clients",
+      "Exploitation des données issues des caméras hyperspectrales",
+      "Connaissances en Machine Learning, Deep Learning ou traitement d'images",
+      "Programmation orientée objet en Python"
+    ],
+    "selection": [
+      {
+        "id_source": "F02",
+        "type": "fait",
+        "priorite": 1,
+        "besoin_offre": "Exploitation des données issues des caméras hyperspectrales",
+        "relation": "transférable",
+        "justification": "Le candidat a construit un pipeline Python pour croiser des données hétérogènes, ce qui démontre sa capacité à manipuler et analyser des données complexes, similaire à l'exploitation des données hyperspectrales."
+      },
+      {
+        "id_source": "C01",
+        "type": "competence",
+        "priorite": 1,
+        "besoin_offre": "Programmation orientée objet en Python",
+        "relation": "directe",
+        "justification": "Le candidat maîtrise Python, ce qui est essentiel pour le développement des algorithmes d'IA mentionnés dans l'offre."
+      },
+      {
+        "id_source": "F06",
+        "type": "fait",
+        "priorite": 2,
+        "besoin_offre": "Développement de nouveaux algorithmes répondant aux besoins spécifiques de nos clients",
+        "relation": "directe",
+        "justification": "Le candidat a développé un pipeline de segmentation automatique, ce qui montre sa capacité à créer des algorithmes spécifiques pour des applications concrètes."
+      },
+      {
+        "id_source": "F10",
+        "type": "fait",
+        "priorite": 3,
+        "besoin_offre": "Connaissances en Machine Learning, Deep Learning ou traitement d'images",
+        "relation": "transférable",
+        "justification": "Le candidat a implémenté un classifieur binaire de spam/ham en Python, ce qui démontre une compréhension des concepts de Machine Learning, bien que ce ne soit pas directement lié à l'identification des polymères."
+      }
+    ],
+    "competences_absentes_importantes": [
+      "Connaissances en Deep Learning",
+      "Expérience avec PyTorch, TensorFlow, Scikit-learn, OpenCV",
+      "Expérience en traitement d'images",
+      "Connaissances en optique ou photonique"
+    ],
+    "elements_ecartes": [
+      "F03",
+      "F04",
+      "F05",
+      "F07",
+      "F08",
+      "F09",
+      "F11",
+      "F12",
+      "F13",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "C14",
+      "C15",
+      "C16",
+      "C17",
+      "C18",
+      "C19",
+      "C20"
+    ]
+  },
+  "selected_sources": [
+    {
+      "id_source": "F02",
+      "type": "fait",
+      "priorite": 1,
+      "besoin_offre": "Exploitation des données issues des caméras hyperspectrales",
+      "relation": "transférable",
+      "justification": "Le candidat a construit un pipeline Python pour croiser des données hétérogènes, ce qui démontre sa capacité à manipuler et analyser des données complexes, similaire à l'exploitation des données hyperspectrales.",
+      "source": {
+        "id": "F02",
+        "experience_id": "E02",
+        "experience": "Analyse des flux de dépôt de poussières sahariennes - Golfe du Lion (1959-2024)",
+        "texte_exact_cv": "Construction d'un pipeline Python complet (xarray, pandas, matplotlib) pour croiser 3 sources de données hétérogènes : modèle régional ALADIN, réanalyse CAMS et observations terrain MOOSE"
+      }
+    },
+    {
+      "id_source": "C01",
+      "type": "competence",
+      "priorite": 1,
+      "besoin_offre": "Programmation orientée objet en Python",
+      "relation": "directe",
+      "justification": "Le candidat maîtrise Python, ce qui est essentiel pour le développement des algorithmes d'IA mentionnés dans l'offre.",
+      "source": {
+        "id": "C01",
+        "categorie": "Langages",
+        "texte_exact_cv": "Python, R"
+      }
+    },
+    {
+      "id_source": "F06",
+      "type": "fait",
+      "priorite": 2,
+      "besoin_offre": "Développement de nouveaux algorithmes répondant aux besoins spécifiques de nos clients",
+      "relation": "directe",
+      "justification": "Le candidat a développé un pipeline de segmentation automatique, ce qui montre sa capacité à créer des algorithmes spécifiques pour des applications concrètes.",
+      "source": {
+        "id": "F06",
+        "experience_id": "E03",
+        "experience": "Segmentation des morsures et cartographie des pits sur ossements",
+        "texte_exact_cv": "Développement d'un pipeline de segmentation automatique (SAM2 + CLAHE + filtres morphologiques) sur des images TIFF d'ossements de lycaon - taux de détection > 85 %"
+      }
+    },
+    {
+      "id_source": "F10",
+      "type": "fait",
+      "priorite": 3,
+      "besoin_offre": "Connaissances en Machine Learning, Deep Learning ou traitement d'images",
+      "relation": "transférable",
+      "justification": "Le candidat a implémenté un classifieur binaire de spam/ham en Python, ce qui démontre une compréhension des concepts de Machine Learning, bien que ce ne soit pas directement lié à l'identification des polymères.",
+      "source": {
+        "id": "F10",
+        "experience_id": "E04",
+        "experience": "Détection de spam : NLP et régression logistique from scratch",
+        "texte_exact_cv": "Implémentation manuelle en Python d'un classifieur binaire spam/ham, sans bibliothèque de ML haut niveau"
+      }
+    }
+  ]
+}
