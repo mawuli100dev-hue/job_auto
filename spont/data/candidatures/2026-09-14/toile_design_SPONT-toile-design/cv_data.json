@@ -1,0 +1,138 @@
+{
+  "offer_id": "SPONT-toile-design",
+  "offer": {
+    "intitule": "Candidature spontanée - Alternance Data / Science des données",
+    "entreprise": "TOILE DESIGN",
+    "lieu": "09300, LAVELANET",
+    "url": "https://www.toiledesign.net/"
+  },
+  "candidature_spontanee": true,
+  "sous_titre_cv": "Candidature spontanée pour une alternance en science des données, disponible dès maintenant",
+  "experiences_sur_cv": [
+    {
+      "id": "tuteur_informatique",
+      "on_cv": true,
+      "toujours_inclure": true,
+      "start_date": "2026-09",
+      "titre": "Tuteur en informatique",
+      "structure": "IUT de Perpignan, Antenne de Carcassonne",
+      "periode": "09/2026 - ...",
+      "tags": [
+        "python",
+        "r",
+        "pedagogie",
+        "encadrement",
+        "enseignement",
+        "programmation"
+      ],
+      "bullets": [
+        "Accompagnement pédagogique des étudiants de BUT SD en **programmation Python, R** et autres langages"
+      ]
+    },
+    {
+      "id": "bdd_breaking_bad",
+      "on_cv": false,
+      "start_date": "2025-12",
+      "titre": "Base de données Breaking Bad",
+      "structure_type": "Projet universitaire, BUT Science des données",
+      "structure": "IUT de Perpignan, Antenne de Carcassonne",
+      "periode": "12/2025 - 01/2026",
+      "tags": [
+        "sql",
+        "fme",
+        "power bi",
+        "etl",
+        "modelisation de donnees",
+        "base de donnees"
+      ],
+      "bullets": [
+        "**Modélisation** complète d'une base de données relationnelle autour de la série Breaking Bad",
+        "Extraction, transformation et chargement (**ETL**) des données avec l'outil FME",
+        "Conception du schéma relationnel et implémentation des requêtes SQL associées",
+        "Restitution des indicateurs clés via un tableau de bord **Power BI**"
+      ]
+    },
+    {
+      "id": "extase_home",
+      "on_cv": false,
+      "start_date": "2025-03",
+      "titre": "Extase-Home - Plateforme de gestion locative",
+      "structure_type": "Projet freelance",
+      "structure": "Client indépendant, Lomé, Togo",
+      "periode": "03/2025 - 05/2025",
+      "tags": [
+        "nextjs",
+        "nestjs",
+        "fullstack",
+        "api rest",
+        "postgresql",
+        "gestion de projet",
+        "developpement web"
+      ],
+      "bullets": [
+        "Conception et développement d'une **plateforme fullstack** de gestion locative pour un parc de plus de 25 propriétés",
+        "Développement de modules de suivi des paiements, messagerie intégrée et partage de documents entre propriétaire et locataires",
+        "Réduction estimée de **70% du temps de gestion** administrative et diminution des impayés grâce à un suivi automatisé",
+        "Architecture **API RESTful** avec base de données relationnelle et authentification sécurisée"
+      ]
+    },
+    {
+      "id": "ecommerce_multitenant",
+      "on_cv": false,
+      "start_date": "2025-02",
+      "titre": "API E-commerce Multi-Tenant",
+      "structure_type": "Projet personnel",
+      "structure": "Développement indépendant",
+      "periode": "02/2025 - 05/2025",
+      "tags": [
+        "api rest",
+        "architecture logicielle",
+        "microservices",
+        "backend",
+        "multi-tenant",
+        "developpement web"
+      ],
+      "bullets": [
+        "Développement d'une **API e-commerce multi-tenant** permettant à plusieurs commerçants de gérer leur boutique sur une même plateforme",
+        "Conception d'une **architecture modulaire** avec isolation stricte des données par commerçant",
+        "Mise en place d'un écosystème mutualisé réduisant les coûts d'infrastructure pour les petits commerçants",
+        "Gestion des rôles, des permissions et de la sécurité des accès par tenant"
+      ]
+    }
+  ],
+  "competences_sur_cv": {
+    "Langages": [
+      "Python, R",
+      "Java, PHP, JavaScript, TypeScript",
+      "C, C++",
+      "VBA"
+    ],
+    "Outils": [
+      "Power BI, Excel, FME",
+      "Pandas, NumPy, Matplotlib",
+      "Notions de Scikit-learn, TensorFlow, PyTorch, OpenCV",
+      "Nest.js, Next.js (React), Streamlit, Flask",
+      "GitHub, GitHub Actions, Docker, Linux"
+    ],
+    "Atouts": [
+      "Permis de conduire B",
+      "Rigueur et autonomie technique",
+      "Aisance à l'oral et en présentation",
+      "Méthodologie Agile / Scrum",
+      "Développement de solutions automatisées"
+    ],
+    "Bases de données": [
+      "PostgreSQL",
+      "MySQL",
+      "Oracle"
+    ],
+    "Langues": [
+      "Anglais: niveau B2",
+      "Allemand: Goethe Zertifikat B2"
+    ],
+    "Loisirs": [
+      "Guitare basse et du tuba",
+      "Cuisine : pâtisserie"
+    ]
+  }
+}

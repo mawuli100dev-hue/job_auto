@@ -1,0 +1,1 @@
+python src\normalize_entreprises.py --xlsx "Entreprises stages STID de 2013 à 2023.xlsx"      

@@ -3,13 +3,19 @@ cv_builder.py
 Module de construction du CV en HTML -> PDF (1 page garantie) + Word.
 Ne contient AUCUN appel LLM : uniquement la mise en forme visuelle.
 
-CHOIX FINAL (2026-09-11) : SIMPLICITÉ AVANT TOUT.
-Après plusieurs tentatives ratées pour un rendu 2 colonnes fiable (table,
-float, changement de moteur PDF), on revient à la solution la plus simple :
-UNE SEULE COLONNE pour les compétences, avec xhtml2pdf (pas de nouvelle
-dépendance à installer). C'est garanti 100% fiable pour tous les ATS, sans
-aucun bug de reading-order possible. On garde juste la marge basse réduite
-et la police un peu plus grande pour compenser visuellement.
+CHOIX FINAL (SIMPLICITÉ AVANT TOUT) :
+Une seule colonne pour les compétences, avec xhtml2pdf (pas de nouvelle
+dépendance à installer). Garanti 100% fiable pour tous les ATS.
+
+CORRECTIF (2026-09-14 - alignement avec competences_pool.json) :
+DEFAULT_COMPETENCES (utilisé par preview_cv.py quand aucune offre n'est
+ciblée) est mis à jour pour refléter les mêmes ajouts que competences_pool.json
+(Pandas/NumPy/Matplotlib, notions Scikit-learn/TensorFlow/PyTorch/OpenCV,
+Power Automate/Kafka, Agile/Scrum, React explicité, NoSQL), suite à l'analyse
+des offres data/IA collectées qui citent très fréquemment ces technologies.
+Aucun changement structurel : tailor_cv.py et build_html/build_docx lisent
+dynamiquement les catégories, donc ces ajouts n'exigent aucune modification
+de code, seulement des données.
 """
 
 import re
@@ -22,7 +28,7 @@ from xhtml2pdf import pisa
 from pypdf import PdfReader
 
 NOM = "Hénoc AMAVIGAN"
-CONTACT = "Carcassonne, France | +33 7 74 74 98 25 | amaviganhenoc@gmail.com | portfolioamavigan.vercel.app"
+CONTACT = "Carcassonne, France | +33 7 74 74 98 25 | amaviganhenoc@gmail.com | https://portfolioamavigan.vercel.app"
 
 SOUS_TITRE_DEFAUT = "Recherche d'alternance en science des données à partir de septembre 2026"
 
@@ -40,11 +46,29 @@ COLOR_BLUE = "#1f3a5f"
 DEFAULT_COMPETENCES_COL1 = ["Langages", "Atouts", "Langues"]
 DEFAULT_COMPETENCES_COL2 = ["Outils", "Bases de données", "Loisirs"]
 
+# Mis à jour le 2026-09-14 pour refléter les technologies les plus demandées
+# dans les offres data/IA collectées (Pandas/NumPy/Matplotlib, notions ML/DL,
+# Power Automate/Kafka, Agile/Scrum), en cohérence avec competences_pool.json.
 DEFAULT_COMPETENCES = {
-    "Langages": ["Python, R", "Java, JavaScript, TypeScript", "C, C++", "VBA"],
-    "Outils": ["Nest.js, Next.js, Streamlit, Flask", "Power BI, Excel, FME", "GitHub, GitHub Actions, Docker, Linux", "QGIS, ArcGIS, N8N, Matlab"],
-    "Atouts": ["Permis de conduire B", "Aisance à l'oral et en présentation", "Développement de solutions automatisées", "Cartographie et visualisation de données", "Rigueur et autonomie technique"],
-    "Bases de données": ["PostgreSQL", "MySQL", "Oracle"],
+    "Langages": ["Python, R", "Java, JavaScript, TypeScript", "C, C++", "VBA", "SQL"],
+    "Outils": [
+        "Pandas, NumPy, Matplotlib",
+        "Notions de Scikit-learn, TensorFlow, PyTorch, OpenCV",
+        "Nest.js, Next.js (React), Streamlit, Flask",
+        "Power BI, Excel, FME",
+        "GitHub, GitHub Actions, Docker, Linux",
+        "QGIS, ArcGIS, N8N, Matlab",
+        "Power Automate, notions de Kafka",
+    ],
+    "Atouts": [
+        "Permis de conduire B",
+        "Aisance à l'oral et en présentation",
+        "Développement de solutions automatisées",
+        "Cartographie et visualisation de données",
+        "Rigueur et autonomie technique",
+        "Méthodologie Agile / Scrum",
+    ],
+    "Bases de données": ["PostgreSQL", "MySQL", "Oracle", "Notions de NoSQL"],
     "Langues": ["Anglais: niveau B2", "Allemand: Goethe Zertifikat B2"],
     "Loisirs": ["Guitare basse et du tuba", "Cuisine : pâtisserie"],
 }
@@ -58,15 +82,21 @@ def bold_markdown_to_html(text: str) -> str:
     return re.sub(r"\*\*(.*?)\*\*", r"<strong>\1</strong>", text)
 
 
+INLINE_CATEGORIES = {"Langages" ,"Langues", "Bases de données", "Loisirs"}
+
 def _competences_column_html(categories: list[str], competences: dict, category_gap: float, item_gap: float) -> str:
     html = ""
     for cat in categories:
         items = competences.get(cat, [])
-        li = "".join(f'<li style="margin-bottom:{item_gap}px">{item}</li>' for item in items)
+        if cat in INLINE_CATEGORIES:
+            content = f'<div style="margin-top:1px">{" | ".join(items)}</div>'
+        else:
+            li = "".join(f'<li style="margin-bottom:{item_gap}px">{item}</li>' for item in items)
+            content = f'<ul style="margin:1px 0 0 14px;padding:0">{li}</ul>'
         html += (
             f'<div style="margin-bottom:{category_gap}px">'
             f'<div style="font-weight:bold;color:{COLOR_BLUE};margin-bottom:2px">{cat}</div>'
-            f'<ul style="margin:1px 0 0 14px;padding:0">{li}</ul>'
+            f'{content}'
             f'</div>'
         )
     return html
@@ -114,7 +144,6 @@ def build_html(
             f'</div>'
         )
 
-    # --- UNE SEULE COLONNE : toutes les catégories à la suite, sans table ---
     competences_categories = DEFAULT_COMPETENCES_COL1 + DEFAULT_COMPETENCES_COL2
     competences_html = _competences_column_html(competences_categories, competences, category_gap, item_gap)
 
@@ -192,7 +221,7 @@ def fit_on_one_page(
     competences: dict | None = None,
     sous_titre: str | None = None,
     start_scale: float = 1.15,
-    min_scale: float = 0.75,
+    min_scale: float = 0.83,
     step: float = 0.05,
     margin_top_cm: float = MARGIN_TOP_CM,
     margin_side_cm: float = MARGIN_SIDE_CM,

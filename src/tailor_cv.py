@@ -46,7 +46,7 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 DEFAULT_MODEL = "openai/gpt-4o-mini"
 
 # Disponibilité par défaut si l'offre ne mentionne aucune date de démarrage.
-DISPONIBILITE_DEFAUT = "septembre 2026"
+DISPONIBILITE_DEFAUT = "Immédiatement"
 
 MOIS_NORMALISES = [
     "janvier", "fevrier", "mars", "avril", "mai", "juin",

@@ -1,0 +1,7 @@
+Intitulé : Candidature spontanée - Alternance Data / Science des données
+Entreprise : CENTRE HOSPITALIER
+Lieu : 69400, GLEIZE
+URL : http://www.lhopitalnordouest.fr/
+
+--- Description complète de l'offre ---
+Le CENTRE HOSPITALIER, situé à Gleizé, est une structure active dans le secteur de la santé, avec un service informatique qui pourrait bénéficier de l'intégration de solutions en science des données et intelligence artificielle. Bien que les détails spécifiques sur ses projets ne soient pas disponibles, l'importance croissante des données dans le secteur hospitalier souligne l'intérêt d'une telle collaboration. Je souhaite contribuer à l'optimisation des processus et à l'amélioration des services grâce à des compétences en data science.

@@ -60,7 +60,7 @@ STATIC_EXPERIENCES = [
             "Développement d'un **dashboard interactif Streamlit** pour visualiser la distribution de 59 espèces floristiques pyrénéennes sous 4 scénarios climatiques SSP (2030-2090)",
             "Implémentation d'un système de cartographie raster géoréférencée (Cartopy, Folium, GeoPandas) avec rendu RGBA sans déformation de projection",
             "Conception d'une **interface multilingue** (FR, EN, ES, CAT) et d'un espace d'administration permettant l'ajout autonome d'espèces sans modification du code",
-            "Intégration de l'interface à la plateforme FloraLab+ : floralab.eu/modelisation-de-niches-ecologiques"
+            "Intégration de l'interface à la plateforme FloraLab+"
         ]
     },
 ]

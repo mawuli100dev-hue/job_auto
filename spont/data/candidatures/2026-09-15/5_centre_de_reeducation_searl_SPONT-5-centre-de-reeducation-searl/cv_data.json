@@ -1,0 +1,142 @@
+{
+  "offer_id": "SPONT-5-centre-de-reeducation-searl",
+  "offer": {
+    "intitule": "Candidature spontanée - Alternance Data / Science des données",
+    "entreprise": "5                          Centre de Rééducation SEARL",
+    "lieu": "34000, Montpellier",
+    "url": ""
+  },
+  "candidature_spontanee": true,
+  "sous_titre_cv": "Candidature spontanée pour une alternance en science des données, disponible dès maintenant",
+  "experiences_sur_cv": [
+    {
+      "id": "tuteur_informatique",
+      "on_cv": true,
+      "toujours_inclure": true,
+      "start_date": "2026-09",
+      "titre": "Tuteur en informatique",
+      "structure": "IUT de Perpignan, Antenne de Carcassonne",
+      "periode": "09/2026 - ...",
+      "tags": [
+        "python",
+        "r",
+        "pedagogie",
+        "encadrement",
+        "enseignement",
+        "programmation"
+      ],
+      "bullets": [
+        "Accompagnement pédagogique des étudiants de BUT SD en **programmation Python, R** et autres langages"
+      ]
+    },
+    {
+      "id": "poussieres_sahariennes",
+      "on_cv": true,
+      "start_date": "2026-04",
+      "titre": "Analyse des flux de dépôt de poussières sahariennes - Golfe du Lion (1959-2024)",
+      "structure_type": "Projet en climatologie et analyse de données",
+      "structure": "CEFREM",
+      "periode": "04/2026 - 06/2026",
+      "tags": [
+        "python",
+        "xarray",
+        "pandas",
+        "matplotlib",
+        "climatologie",
+        "geospatial",
+        "netcdf",
+        "modelisation",
+        "statistiques",
+        "cartographie"
+      ],
+      "bullets": [
+        "Construction d'un **pipeline Python** complet (xarray, pandas, matplotlib) pour croiser 3 sources de données hétérogènes : modèle régional ALADIN, réanalyse CAMS et observations terrain MOOSE",
+        "Calcul des flux annuels de dépôt sec et humide sur 66 ans de données, et quantification des biais relatifs ALADIN vs observations aux stations Cap Bear et Cap Frioul (jusqu'à ±132%)",
+        "Calcul de **tendance linéaire** sur la grille ALADIN et **cartographie spatiale** des résultats sur le domaine Golfe du Lion",
+        "Production de figures (saisonnières, décennales, annuelles, ...) prêtes pour une publication scientifique"
+      ]
+    },
+    {
+      "id": "segmentation_ossements",
+      "on_cv": true,
+      "start_date": "2026-04",
+      "titre": "Segmentation des morsures et cartographie des pits sur ossements",
+      "structure_type": "Projet de recherche taphonomique",
+      "structure": "CEFREM",
+      "periode": "04/2026 - 06/2026",
+      "tags": [
+        "computer vision",
+        "vision par ordinateur",
+        "segmentation",
+        "image processing",
+        "python",
+        "geospatial",
+        "sam2"
+      ],
+      "bullets": [
+        "Développement d'un **pipeline de segmentation** automatique (SAM2 + CLAHE + filtres morphologiques) sur des images TIFF d'ossements de lycaon - taux de détection > 85 %",
+        "Distinction de 3 zones fonctionnelles (contour, zone polie, zone broyée) par analyse de luminance LAB et variance locale",
+        "Représentation géospatiale complète : chargement de shapefiles et GeoJSON (GeoPandas, Shapely), jointure avec mesures métriques Leica sur 4 types d'os longs",
+        "Résultats présentés au **11th Postgraduate ZooArchaeology Forum**, Université de Lisbonne, du 16 au 19 juin 2026"
+      ]
+    },
+    {
+      "id": "spam_nlp_from_scratch",
+      "on_cv": false,
+      "start_date": "2025-09",
+      "titre": "Détection de spam : NLP et régression logistique from scratch",
+      "structure_type": "Projet personnel de machine learning",
+      "structure": "Développement indépendant",
+      "periode": "09/2025 - 10/2025",
+      "tags": [
+        "nlp",
+        "machine learning",
+        "python",
+        "regression logistique",
+        "traitement de texte",
+        "from scratch"
+      ],
+      "bullets": [
+        "Implémentation **manuelle en Python** d'un classifieur binaire spam/ham, sans bibliothèque de ML haut niveau",
+        "Construction d'un pipeline complet de **prétraitement textuel (NLP)** : tokenisation, nettoyage, vectorisation",
+        "Développement d'un algorithme de **régression logistique from scratch**, incluant la descente de gradient",
+        "Démarche pédagogique visant à comprendre en profondeur le fonctionnement mathématique des modèles de classification"
+      ]
+    }
+  ],
+  "competences_sur_cv": {
+    "Langages": [
+      "Python, R",
+      "Java, PHP, JavaScript, TypeScript",
+      "C, C++",
+      "VBA"
+    ],
+    "Outils": [
+      "Power BI, Excel, FME",
+      "Pandas, NumPy, Matplotlib",
+      "Notions de Scikit-learn, TensorFlow, PyTorch, OpenCV",
+      "Nest.js, Next.js (React), Streamlit, Flask",
+      "GitHub, GitHub Actions, Docker, Linux"
+    ],
+    "Atouts": [
+      "Permis de conduire B",
+      "Rigueur et autonomie technique",
+      "Aisance à l'oral et en présentation",
+      "Méthodologie Agile / Scrum",
+      "Développement de solutions automatisées"
+    ],
+    "Bases de données": [
+      "PostgreSQL",
+      "MySQL",
+      "Oracle"
+    ],
+    "Langues": [
+      "Anglais: niveau B2",
+      "Allemand: Goethe Zertifikat B2"
+    ],
+    "Loisirs": [
+      "Guitare basse et du tuba",
+      "Cuisine : pâtisserie"
+    ]
+  }
+}
