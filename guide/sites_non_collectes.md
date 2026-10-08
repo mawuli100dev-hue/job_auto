@@ -17,9 +17,8 @@ depuis un export (Apify...) : voir [source_manuelles.md](source_manuelles.md).
 | HelloWork | Recherche interdite aux robots ; pas encore étudié en détail |
 | JobTeaser | Offres souvent réservées aux étudiants connectés via leur école ; pas encore étudié en détail |
 
-## Une piste pour ces sites : les alertes e-mail
+## LinkedIn : par les alertes e-mail
 
-LinkedIn, Indeed, HelloWork et Welcome to the Jungle envoient des alertes par e-mail
-(intitulé, entreprise, lieu, lien, mais pas la description complète). Piste à
-construire : lire ces e-mails pour obtenir la liste du jour, puis capturer la
-description des offres choisies en un clic depuis ton navigateur.
+LinkedIn est accessible par tes alertes emploi reçues dans Gmail : voir
+[source_linkedin.md](source_linkedin.md). Les alertes d'Indeed, HelloWork ou Welcome to
+the Jungle pourront être ajoutées de la même façon quand tu en recevras.

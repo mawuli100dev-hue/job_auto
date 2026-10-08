@@ -17,6 +17,7 @@ Toutes les commandes se lancent dans **PowerShell**, depuis le dossier du projet
 | [source_pass.md](source_pass.md) | PASS, fonction publique : alternance et stage |
 | [source_engagement_jeunes.md](source_engagement_jeunes.md) | Engagement Jeunes : alternance et stage |
 | [source_letudiant.md](source_letudiant.md) | L'Étudiant Jobs & Stages : alternance et stage |
+| [source_linkedin.md](source_linkedin.md) | LinkedIn, par les alertes e-mail Gmail : alternance et stage |
 | [source_manuelles.md](source_manuelles.md) | Offres ajoutées à la main (LinkedIn, Apify, sites d'entreprises...) |
 | [source_spontanees.md](source_spontanees.md) | Candidatures spontanées |
 | [etape_filtre.md](etape_filtre.md) | Ce que fait le filtre, et ses options |
@@ -59,6 +60,8 @@ OPENROUTER_API_KEY=...   (CV et lettres)
 FT_CLIENT_ID=...         (France Travail)
 FT_CLIENT_SECRET=...     (France Travail)
 LBA_API_TOKEN=...        (La Bonne Alternance)
+GMAIL_ADDRESS=...        (alertes LinkedIn)
+GMAIL_APP_PASSWORD=...   (alertes LinkedIn)
 ```
 
 PASS, Engagement Jeunes et L'Étudiant ne demandent aucune clé.
@@ -80,6 +83,7 @@ data\
 ├── pass\
 ├── engagement_jeunes\
 ├── letudiant\
+├── linkedin\                              (+ 0_a_completer\ : offres des alertes à compléter)
 ├── manuelles\                             offres ajoutées à la main
 ├── spontanees\                            candidatures spontanées
 ├── extra\                                 annexes ajoutées au dossier PDF

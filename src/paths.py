@@ -24,6 +24,7 @@ SOURCE_LBA = "la_bonne_alternance"
 SOURCE_PASS = "pass"
 SOURCE_ENGAGEMENT_JEUNES = "engagement_jeunes"
 SOURCE_LETUDIANT = "letudiant"
+SOURCE_LINKEDIN = "linkedin"
 SOURCE_MANUAL = "manuelles"
 SOURCE_SPONTANEOUS = "spontanees"
 
@@ -33,10 +34,13 @@ SOURCE_FOLDERS = (
     SOURCE_PASS,
     SOURCE_ENGAGEMENT_JEUNES,
     SOURCE_LETUDIANT,
+    SOURCE_LINKEDIN,
     SOURCE_MANUAL,
     SOURCE_SPONTANEOUS,
 )
 
+# Offres repérées par les alertes e-mail, en attente de leur description.
+STAGE_TO_COMPLETE = "0_a_completer"
 STAGE_RAW = "1_brutes"
 STAGE_FILTERED = "2_filtrees"
 STAGE_APPLICATIONS = "3_candidatures"
@@ -78,6 +82,7 @@ def source_from_value(
         "pass": SOURCE_PASS,
         "engagement_jeunes": SOURCE_ENGAGEMENT_JEUNES,
         "letudiant": SOURCE_LETUDIANT,
+        "linkedin": SOURCE_LINKEDIN,
     }
 
     return aliases.get(text, SOURCE_MANUAL)
