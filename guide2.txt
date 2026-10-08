@@ -1,0 +1,91 @@
+python src\collect_offers.py --type-candidature stage --keywords-list "data,data analyst,data scientist,data engineer,business intelligence,machine learning,intelligence artificielle,IA,AI,statistique,statistic" --max-anciennete-jours 3
+
+python src\collect_offers.py --type-candidature alternance --keywords-list "data,data analyst,data scientist,data engineer,business intelligence,machine learning,intelligence artificielle,IA,AI,statistique,statistic" --max-anciennete-jours 3
+
+python src\collect_offers_lba.py --type-candidature alternance --romes M1419,M1403,M1805,M1802,M1810
+
+python src\filter_offers.py `
+  --type-candidature alternance `
+  --input "data\offres\alternance\2026-10-01\offres_alternance_2026-10-01_093000.csv" `
+  --exclude-entreprises "ISCOD,OPENCLASSROOMS,Tetranergy Business School Rodez"
+
+  python src\filter_offers.py `
+  --type-candidature stage `
+  --input "data\offres\stage\2026-10-01\offres_stage_2026-10-01_093500.csv" `
+  --exclude-entreprises "ISCOD,OPENCLASSROOMS,Tetranergy Business School Rodez"
+
+
+python src\tailor_cv.py `
+  --csv "data\offres_filtrees\alternance\2026-10-01\offres_filtrees_alternance_2026-10-01_100000.csv" `
+  --offer-id "214CZVT" `
+  --type-candidature alternance
+
+
+python src\tailor_cv.py `
+  --csv "data\offres_filtrees\stage\2026-10-01\offres_filtrees_stage_2026-10-01_100000.csv" `
+  --offer-id "1234567" `
+  --type-candidature stage
+
+
+python src\generate_letter.py `
+  --csv "data\offres_filtrees\alternance\2026-10-01\offres_filtrees_alternance_2026-10-01_100000.csv" `
+  --offer-id "214CZVT" `
+  --source-type published `
+  --type-candidature alternance
+
+
+python src\generate_letter.py `
+  --csv "data\offres_filtrees\stage\2026-10-01\offres_filtrees_stage_2026-10-01_100000.csv" `
+  --offer-id "1234567" `
+  --source-type published `
+  --type-candidature stage
+
+python src\generate_letter.py `
+  --csv "data\entreprises\entreprises_uniques.csv" `
+  --offer-id "entreprise_123" `
+  --source-type spontaneous `
+  --type-candidature alternance
+
+
+python src\merge_dossier.py --offer-id 213QBYHs
+
+
+
+Commandes
+Ancien CSV d’alternances
+Comme le CSV historique n’a peut-être pas de colonne type_candidature, la valeur par défaut restera alternance :
+
+powershell
+.\run_pipeline.ps1 `
+    -CsvPath "data\offres_filtrees\2026-09-26\offres_filtrees_2026-09-26_103410.csv" `
+    -PauseTousLesXOffres 3 `
+    -DureePauseLongueSec 30
+Nouveau CSV d’alternances
+powershell
+.\run_pipeline.ps1 `
+    -CsvPath "data\offres_filtrees\alternance\2026-10-01\offres_filtrees_alternance_2026-10-01_100000.csv" `
+    -TypeCandidature alternance `
+    -PauseTousLesXOffres 3 `
+    -DureePauseLongueSec 30
+Nouveau CSV de stages
+powershell
+.\run_pipeline.ps1 `
+    -CsvPath "data\offres_filtrees\stage\2026-10-01\offres_filtrees_stage_2026-10-01_100000.csv" `
+    -TypeCandidature stage `
+    -PauseTousLesXOffres 3 `
+    -DureePauseLongueSec 30
+Test sur une seule offre
+powershell
+.\run_pipeline.ps1 `
+    -CsvPath "data\offres_filtrees\alternance\2026-10-01\offres.csv" `
+    -OfferIds "214CZVT" `
+    -TypeCandidature alternance `
+    -Force
+Test sans annexes
+powershell
+.\run_pipeline.ps1 `
+    -CsvPath "data\offres_filtrees\stage\2026-10-01\offres.csv" `
+    -TypeCandidature stage `
+    -MaxOffers 1 `
+    -SansAnnexes `
+    -Force

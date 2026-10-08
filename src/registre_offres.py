@@ -1,155 +1,1165 @@
+# job_automation/src/registre_offres.py
+
 """
-registre_offres.py
-Registre simple des offres déjà traitées par le pipeline (CV + lettre déjà
-générés), identifiées par leur ID France Travail.
+Registre des candidatures déjà traitées par le pipeline.
 
-FORMAT (nouveau, simplifié) : un simple fichier TEXTE, UN ID PAR LIGNE, SANS
-EN-TÊTE. Le format CSV-avec-en-tête a été abandonné car il causait un bug
-silencieux : si le fichier était un jour créé/édité sans la ligne d'en-tête
-"id" (par erreur, ou manuellement), csv.DictReader traitait la première offre
-comme le nom de la colonne au lieu d'une donnée, et TOUT le registre semblait
-vide alors qu'il contenait des ids valides. Un simple fichier ligne par ligne
-n'a pas cette ambiguïté : chaque ligne non vide est un id, un point c'est tout.
+Une candidature est considérée comme traitée lorsque l'ensemble de son
+dossier a été produit avec succès :
 
-Le registre est stocké par défaut dans data/offres_traitees.csv (le nom de
-fichier ne change pas, seul son contenu interne est maintenant un texte simple
-plutôt qu'un CSV avec en-tête - ton fichier existant fonctionne tel quel avec
-cette nouvelle version, aucune migration nécessaire).
+- CV PDF et Word ;
+- lettre de motivation PDF et Word ;
+- dossiers PDF fusionnés.
 
-Usage :
-    python src\\registre_offres.py --check 213QBYH
-    python src\\registre_offres.py --add 213QBYH
-    python src\\registre_offres.py --add-list "213SGGN,213QWNF,213QBYH,6764798,6748181"
+Le registre utilise un fichier texte contenant une clé par ligne,
+sans en-tête.
+
+Nouvelle clé générale :
+
+    source_type|contract_type|application_id
+
+Exemples :
+
+    published|alternance|214CZVT
+    published|stage|1234567
+    spontaneous|alternance|carvolix_data_analyst
+    spontaneous|stage|entreprise_data_scientist
+
+Compatibilité
+-------------
+
+Les anciennes lignes contenant seulement un identifiant restent reconnues
+pour les offres publiées en alternance.
+
+Exemple d'ancien registre :
+
+    214CZVT
+    214JLFK
+
+Exemple du nouveau registre :
+
+    published|alternance|214CZVT
+    published|stage|1234567
+
+Le nom historique data/offres_traitees.csv est conservé pour éviter de
+casser le pipeline. Son contenu reste un fichier texte simple.
+
+Commandes
+---------
+
+Vérification avec les valeurs historiques par défaut :
+
+    python src\\registre_offres.py --check 214CZVT
+
+Vérification explicite d'une alternance publiée :
+
+    python src\\registre_offres.py ^
+        --check 214CZVT ^
+        --source-type published ^
+        --type-candidature alternance
+
+Vérification d'un stage publié :
+
+    python src\\registre_offres.py ^
+        --check 1234567 ^
+        --source-type published ^
+        --type-candidature stage
+
+Candidature spontanée :
+
+    python src\\registre_offres.py ^
+        --check carvolix_data_analyst ^
+        --source-type spontaneous ^
+        --type-candidature alternance
+
+Ajout :
+
+    python src\\registre_offres.py ^
+        --add 214CZVT ^
+        --source-type published ^
+        --type-candidature alternance
+
+Ajout de plusieurs candidatures :
+
+    python src\\registre_offres.py ^
+        --add-list "214CZVT,214JLFK,1234567" ^
+        --source-type published ^
+        --type-candidature alternance
+
+Lister :
+
     python src\\registre_offres.py --list
-    python src\\registre_offres.py --nettoyer   # supprime doublons/lignes vides du fichier
+
+Afficher les détails des clés :
+
+    python src\\registre_offres.py --list --details
+
+Nettoyer :
+
+    python src\\registre_offres.py --nettoyer
 """
 
 import argparse
+import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-REGISTRE_PATH_DEFAUT = BASE_DIR / "data" / "offres_traitees.csv"
+
+# ---------------------------------------------------------------------------
+# Chemins
+# ---------------------------------------------------------------------------
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+DEFAULT_REGISTRY_PATH = (
+    PROJECT_ROOT
+    / "data"
+    / "offres_traitees.csv"
+)
 
 
-def load_registre(path: Path) -> set[str]:
-    """Charge l'ensemble des ids déjà présents dans le registre. Une ligne par
-    id, lignes vides ignorées. Renvoie un ensemble vide si le fichier n'existe
-    pas encore (première utilisation)."""
+# ---------------------------------------------------------------------------
+# Types autorisés
+# ---------------------------------------------------------------------------
+
+SOURCE_PUBLISHED = "published"
+SOURCE_SPONTANEOUS = "spontaneous"
+
+SOURCE_TYPES = (
+    SOURCE_PUBLISHED,
+    SOURCE_SPONTANEOUS,
+)
+
+CONTRACT_ALTERNANCE = "alternance"
+CONTRACT_STAGE = "stage"
+
+CONTRACT_TYPES = (
+    CONTRACT_ALTERNANCE,
+    CONTRACT_STAGE,
+)
+
+KEY_SEPARATOR = "|"
+
+
+# ---------------------------------------------------------------------------
+# Gestion des chemins
+# ---------------------------------------------------------------------------
+
+def resolve_path(
+    value: str | Path,
+) -> Path:
+    """
+    Convertit un chemin en chemin absolu.
+
+    Les chemins relatifs sont interprétés depuis la racine
+    du projet 
+    """
+
+    path = Path(value).expanduser()
+
+    if not path.is_absolute():
+        path = PROJECT_ROOT / path
+
+    return path.resolve()
+
+
+# ---------------------------------------------------------------------------
+# Validation
+# ---------------------------------------------------------------------------
+
+def normalize_identifier(
+    application_id: object,
+) -> str:
+    """
+    Nettoie et valide un identifiant de candidature.
+
+    La casse est volontairement conservée pour garder les identifiants
+    originaux de France Travail ou des autres sources.
+    """
+
+    if application_id is None:
+        return ""
+
+    identifier = str(application_id).strip()
+
+    if not identifier:
+        return ""
+
+    if "\n" in identifier or "\r" in identifier:
+        raise ValueError(
+            "L'identifiant ne peut pas contenir "
+            "de saut de ligne."
+        )
+
+    if KEY_SEPARATOR in identifier:
+        raise ValueError(
+            f"L'identifiant ne peut pas contenir "
+            f"le caractère « {KEY_SEPARATOR} »."
+        )
+
+    return identifier
+
+
+def validate_source_type(
+    source_type: str,
+) -> str:
+    """
+    Vérifie et normalise le type de source.
+    """
+
+    normalized = str(source_type).strip().lower()
+
+    if normalized not in SOURCE_TYPES:
+        raise ValueError(
+            "Le type de source doit être "
+            "'published' ou 'spontaneous'."
+        )
+
+    return normalized
+
+
+def validate_contract_type(
+    contract_type: str,
+) -> str:
+    """
+    Vérifie et normalise le type de contrat.
+    """
+
+    normalized = str(contract_type).strip().lower()
+
+    if normalized not in CONTRACT_TYPES:
+        raise ValueError(
+            "Le type de candidature doit être "
+            "'alternance' ou 'stage'."
+        )
+
+    return normalized
+
+
+# ---------------------------------------------------------------------------
+# Construction des clés
+# ---------------------------------------------------------------------------
+
+def build_registry_key(
+    application_id: str,
+    source_type: str = SOURCE_PUBLISHED,
+    contract_type: str = CONTRACT_ALTERNANCE,
+) -> str:
+    """
+    Construit une clé unique de candidature.
+
+    Format :
+
+        source_type|contract_type|application_id
+    """
+
+    identifier = normalize_identifier(
+        application_id
+    )
+
+    if not identifier:
+        raise ValueError(
+            "L'identifiant de candidature est vide."
+        )
+
+    normalized_source = validate_source_type(
+        source_type
+    )
+
+    normalized_contract = validate_contract_type(
+        contract_type
+    )
+
+    return KEY_SEPARATOR.join(
+        [
+            normalized_source,
+            normalized_contract,
+            identifier,
+        ]
+    )
+
+
+def parse_registry_key(
+    entry: str,
+) -> dict:
+    """
+    Analyse une ligne du registre.
+
+    Retourne un dictionnaire décrivant soit :
+    - une nouvelle clé structurée ;
+    - un ancien identifiant simple.
+    """
+
+    entry = str(entry).strip()
+
+    parts = entry.split(
+        KEY_SEPARATOR,
+        maxsplit=2,
+    )
+
+    if (
+        len(parts) == 3
+        and parts[0] in SOURCE_TYPES
+        and parts[1] in CONTRACT_TYPES
+        and parts[2].strip()
+    ):
+        return {
+            "format": "structured",
+            "source_type": parts[0],
+            "contract_type": parts[1],
+            "application_id": parts[2].strip(),
+            "key": entry,
+        }
+
+    return {
+        "format": "legacy",
+        "source_type": SOURCE_PUBLISHED,
+        "contract_type": CONTRACT_ALTERNANCE,
+        "application_id": entry,
+        "key": entry,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Lecture du registre
+# ---------------------------------------------------------------------------
+
+def load_registry_entries(
+    path: Path = DEFAULT_REGISTRY_PATH,
+) -> list[str]:
+    """
+    Charge les lignes du registre en conservant leur ordre.
+
+    Sont ignorés :
+    - les lignes vides ;
+    - un ancien en-tête CSV exactement égal à « id » ;
+    - les lignes commençant par #.
+    """
+
     if not path.exists():
-        return set()
-    with open(path, encoding="utf-8") as f:
-        return {ligne.strip() for ligne in f if ligne.strip()}
+        return []
+
+    entries: list[str] = []
+
+    with path.open(
+        mode="r",
+        encoding="utf-8-sig",
+    ) as registry_file:
+        for raw_line in registry_file:
+            line = raw_line.strip()
+
+            if not line:
+                continue
+
+            if line.startswith("#"):
+                continue
+
+            if line.lower() == "id":
+                continue
+
+            entries.append(line)
+
+    return entries
 
 
-def is_already_processed(offer_id: str, path: Path = REGISTRE_PATH_DEFAUT) -> bool:
-    return offer_id.strip() in load_registre(path)
+def load_registre(
+    path: Path = DEFAULT_REGISTRY_PATH,
+) -> set[str]:
+    """
+    Fonction conservée pour la compatibilité avec l'ancien code.
+
+    Retourne l'ensemble des entrées enregistrées.
+    """
+
+    return set(
+        load_registry_entries(path)
+    )
 
 
-def add_to_registre(offer_id: str, path: Path = REGISTRE_PATH_DEFAUT) -> bool:
-    """Ajoute l'id au registre s'il n'y est pas déjà.
-    Retourne True si réellement ajouté, False si déjà présent (idempotent)."""
-    offer_id = offer_id.strip()
-    if not offer_id:
+# ---------------------------------------------------------------------------
+# Vérification d'une candidature
+# ---------------------------------------------------------------------------
+
+def is_already_processed(
+    application_id: str,
+    path: Path = DEFAULT_REGISTRY_PATH,
+    source_type: str = SOURCE_PUBLISHED,
+    contract_type: str = CONTRACT_ALTERNANCE,
+) -> bool:
+    """
+    Vérifie si une candidature est déjà enregistrée.
+
+    Compatibilité avec l'ancien registre :
+    un identifiant brut est reconnu seulement pour une offre publiée
+    en alternance, car c'était le seul cas pris en charge auparavant.
+    """
+
+    identifier = normalize_identifier(
+        application_id
+    )
+
+    if not identifier:
         return False
 
-    ids_existants = load_registre(path)
-    if offer_id in ids_existants:
+    normalized_source = validate_source_type(
+        source_type
+    )
+
+    normalized_contract = validate_contract_type(
+        contract_type
+    )
+
+    key = build_registry_key(
+        application_id=identifier,
+        source_type=normalized_source,
+        contract_type=normalized_contract,
+    )
+
+    entries = load_registre(path)
+
+    if key in entries:
+        return True
+
+    # Compatibilité avec les anciens identifiants simples.
+    if (
+        normalized_source == SOURCE_PUBLISHED
+        and normalized_contract == CONTRACT_ALTERNANCE
+        and identifier in entries
+    ):
+        return True
+
+    return False
+
+
+# ---------------------------------------------------------------------------
+# Ajout dans le registre
+# ---------------------------------------------------------------------------
+
+def add_to_registry(
+    application_id: str,
+    path: Path = DEFAULT_REGISTRY_PATH,
+    source_type: str = SOURCE_PUBLISHED,
+    contract_type: str = CONTRACT_ALTERNANCE,
+) -> bool:
+    """
+    Ajoute une candidature au registre.
+
+    Retourne :
+    - True si une nouvelle clé a été ajoutée ;
+    - False si la candidature était déjà enregistrée.
+    """
+
+    identifier = normalize_identifier(
+        application_id
+    )
+
+    if not identifier:
         return False
 
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(offer_id + "\n")
+    if is_already_processed(
+        application_id=identifier,
+        path=path,
+        source_type=source_type,
+        contract_type=contract_type,
+    ):
+        return False
+
+    key = build_registry_key(
+        application_id=identifier,
+        source_type=source_type,
+        contract_type=contract_type,
+    )
+
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    with path.open(
+        mode="a",
+        encoding="utf-8",
+        newline="\n",
+    ) as registry_file:
+        registry_file.write(
+            key + "\n"
+        )
+
+        registry_file.flush()
+
+        try:
+            os.fsync(
+                registry_file.fileno()
+            )
+        except OSError:
+            # Certains systèmes de fichiers peuvent ne pas
+            # prendre en charge fsync.
+            pass
+
     return True
 
 
-def add_list_to_registre(offer_ids: list[str], path: Path = REGISTRE_PATH_DEFAUT) -> tuple[int, int]:
-    """Ajoute plusieurs ids d'un coup. Retourne (nb_ajoutes, nb_deja_presents)."""
-    nb_ajoutes = 0
-    nb_deja_presents = 0
-    for offer_id in offer_ids:
-        offer_id = offer_id.strip()
-        if not offer_id:
+def add_to_registre(
+    offer_id: str,
+    path: Path = DEFAULT_REGISTRY_PATH,
+    source_type: str = SOURCE_PUBLISHED,
+    contract_type: str = CONTRACT_ALTERNANCE,
+) -> bool:
+    """
+    Alias conservé pour les anciens imports Python.
+    """
+
+    return add_to_registry(
+        application_id=offer_id,
+        path=path,
+        source_type=source_type,
+        contract_type=contract_type,
+    )
+
+
+def add_list_to_registry(
+    application_ids: list[str],
+    path: Path = DEFAULT_REGISTRY_PATH,
+    source_type: str = SOURCE_PUBLISHED,
+    contract_type: str = CONTRACT_ALTERNANCE,
+) -> tuple[int, int, int]:
+    """
+    Ajoute plusieurs candidatures.
+
+    Retourne :
+    - nombre ajouté ;
+    - nombre déjà présent ;
+    - nombre ignoré car vide.
+    """
+
+    added_count = 0
+    existing_count = 0
+    ignored_count = 0
+
+    for application_id in application_ids:
+        identifier = normalize_identifier(
+            application_id
+        )
+
+        if not identifier:
+            ignored_count += 1
             continue
-        if add_to_registre(offer_id, path):
-            nb_ajoutes += 1
+
+        was_added = add_to_registry(
+            application_id=identifier,
+            path=path,
+            source_type=source_type,
+            contract_type=contract_type,
+        )
+
+        if was_added:
+            added_count += 1
         else:
-            nb_deja_presents += 1
-    return nb_ajoutes, nb_deja_presents
+            existing_count += 1
+
+    return (
+        added_count,
+        existing_count,
+        ignored_count,
+    )
 
 
-def nettoyer_registre(path: Path) -> tuple[int, int]:
-    """Réécrit le fichier proprement : supprime lignes vides et doublons,
-    en conservant l'ordre de première apparition. Retourne (avant, apres)."""
+def add_list_to_registre(
+    offer_ids: list[str],
+    path: Path = DEFAULT_REGISTRY_PATH,
+    source_type: str = SOURCE_PUBLISHED,
+    contract_type: str = CONTRACT_ALTERNANCE,
+) -> tuple[int, int]:
+    """
+    Alias compatible avec l'ancienne fonction.
+
+    L'ancien appel attendait seulement :
+    (nombre ajouté, nombre déjà présent).
+    """
+
+    (
+        added_count,
+        existing_count,
+        _,
+    ) = add_list_to_registry(
+        application_ids=offer_ids,
+        path=path,
+        source_type=source_type,
+        contract_type=contract_type,
+    )
+
+    return (
+        added_count,
+        existing_count,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Nettoyage du registre
+# ---------------------------------------------------------------------------
+
+def clean_registry(
+    path: Path = DEFAULT_REGISTRY_PATH,
+) -> tuple[int, int, int]:
+    """
+    Nettoie le registre :
+
+    - supprime les lignes vides ;
+    - supprime les doublons ;
+    - supprime l'ancien en-tête « id » ;
+    - conserve l'ordre de première apparition ;
+    - réécrit le fichier de manière atomique.
+
+    Retourne :
+    - nombre de lignes utiles avant nettoyage ;
+    - nombre de lignes après nettoyage ;
+    - nombre de doublons supprimés.
+    """
+
     if not path.exists():
-        return (0, 0)
+        return (
+            0,
+            0,
+            0,
+        )
 
-    with open(path, encoding="utf-8") as f:
-        lignes_brutes = [ligne.strip() for ligne in f]
+    raw_entries = load_registry_entries(
+        path
+    )
 
-    avant = len([l for l in lignes_brutes if l])
+    before_count = len(
+        raw_entries
+    )
 
-    vus = set()
-    propres = []
-    for ligne in lignes_brutes:
-        if ligne and ligne not in vus:
-            vus.add(ligne)
-            propres.append(ligne)
+    seen: set[str] = set()
+    clean_entries: list[str] = []
 
-    with open(path, "w", encoding="utf-8") as f:
-        for id_ in propres:
-            f.write(id_ + "\n")
+    for entry in raw_entries:
+        if entry in seen:
+            continue
 
-    return (avant, len(propres))
+        seen.add(entry)
+        clean_entries.append(entry)
+
+    after_count = len(
+        clean_entries
+    )
+
+    removed_duplicates = (
+        before_count - after_count
+    )
+
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    temporary_path = path.with_name(
+        f".{path.name}.tmp"
+    )
+
+    with temporary_path.open(
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
+    ) as registry_file:
+        for entry in clean_entries:
+            registry_file.write(
+                entry + "\n"
+            )
+
+        registry_file.flush()
+
+        try:
+            os.fsync(
+                registry_file.fileno()
+            )
+        except OSError:
+            pass
+
+    os.replace(
+        temporary_path,
+        path,
+    )
+
+    return (
+        before_count,
+        after_count,
+        removed_duplicates,
+    )
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Registre des offres deja traitees par le pipeline (CV + lettre generes)")
-    parser.add_argument("--registre", default=str(REGISTRE_PATH_DEFAUT),
-                         help="Chemin du fichier registre (defaut: data/offres_traitees.csv)")
+def nettoyer_registre(
+    path: Path = DEFAULT_REGISTRY_PATH,
+) -> tuple[int, int]:
+    """
+    Alias compatible avec l'ancienne fonction.
+    """
 
-    groupe = parser.add_mutually_exclusive_group(required=True)
-    groupe.add_argument("--check", metavar="ID", help="Verifie si cet ID a deja ete traite (code retour 0=non, 1=oui)")
-    groupe.add_argument("--add", metavar="ID", help="Ajoute cet ID au registre (idempotent)")
-    groupe.add_argument("--add-list", metavar="ID1,ID2,...", help="Ajoute plusieurs IDs d'un coup, separes par des virgules")
-    groupe.add_argument("--list", action="store_true", help="Affiche tous les IDs deja enregistres")
-    groupe.add_argument("--nettoyer", action="store_true", help="Supprime les lignes vides et les doublons du fichier")
+    (
+        before_count,
+        after_count,
+        _,
+    ) = clean_registry(path)
 
-    args = parser.parse_args()
-    path = Path(args.registre)
+    return (
+        before_count,
+        after_count,
+    )
 
-    if args.list:
-        ids = sorted(load_registre(path))
-        print(f"{len(ids)} offre(s) deja traitee(s) dans le registre ({path}) :")
-        for i in ids:
-            print(f"  - {i}")
+
+# ---------------------------------------------------------------------------
+# Migration facultative
+# ---------------------------------------------------------------------------
+
+def migrate_legacy_entries(
+    path: Path = DEFAULT_REGISTRY_PATH,
+) -> tuple[int, int]:
+    """
+    Convertit les anciens identifiants simples en clés structurées :
+
+        214CZVT
+
+    devient :
+
+        published|alternance|214CZVT
+
+    Les nouvelles clés déjà présentes ne sont pas modifiées.
+
+    Retourne :
+    - nombre d'anciennes lignes converties ;
+    - nombre total de lignes après migration.
+    """
+
+    entries = load_registry_entries(
+        path
+    )
+
+    if not entries:
+        return (
+            0,
+            0,
+        )
+
+    migrated_entries: list[str] = []
+    migrated_count = 0
+    seen: set[str] = set()
+
+    for entry in entries:
+        parsed = parse_registry_key(
+            entry
+        )
+
+        if parsed["format"] == "legacy":
+            new_entry = build_registry_key(
+                application_id=parsed[
+                    "application_id"
+                ],
+                source_type=SOURCE_PUBLISHED,
+                contract_type=CONTRACT_ALTERNANCE,
+            )
+
+            migrated_count += 1
+
+        else:
+            new_entry = parsed["key"]
+
+        if new_entry in seen:
+            continue
+
+        seen.add(new_entry)
+        migrated_entries.append(
+            new_entry
+        )
+
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    temporary_path = path.with_name(
+        f".{path.name}.migration.tmp"
+    )
+
+    with temporary_path.open(
+        mode="w",
+        encoding="utf-8",
+        newline="\n",
+    ) as registry_file:
+        for entry in migrated_entries:
+            registry_file.write(
+                entry + "\n"
+            )
+
+        registry_file.flush()
+
+        try:
+            os.fsync(
+                registry_file.fileno()
+            )
+        except OSError:
+            pass
+
+    os.replace(
+        temporary_path,
+        path,
+    )
+
+    return (
+        migrated_count,
+        len(migrated_entries),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Affichage
+# ---------------------------------------------------------------------------
+
+def print_registry(
+    path: Path,
+    details: bool = False,
+) -> None:
+    """
+    Affiche les entrées du registre.
+    """
+
+    entries = load_registry_entries(
+        path
+    )
+
+    print(
+        f"{len(entries)} candidature(s) "
+        f"enregistrée(s) dans :"
+    )
+
+    print(
+        path
+    )
+
+    if not entries:
         return
 
-    if args.check:
-        if is_already_processed(args.check, path):
-            print(f"DEJA_TRAITEE: {args.check}")
-            raise SystemExit(1)
-        else:
-            print(f"NON_TRAITEE: {args.check}")
-            raise SystemExit(0)
+    print()
 
-    if args.add:
-        ajoute = add_to_registre(args.add, path)
-        if ajoute:
-            print(f"Ajoute au registre : {args.add}")
+    for entry in entries:
+        if not details:
+            print(f"- {entry}")
+            continue
+
+        parsed = parse_registry_key(
+            entry
+        )
+
+        if parsed["format"] == "legacy":
+            print(
+                f"- {parsed['application_id']} "
+                f"[ancien format : "
+                f"published / alternance]"
+            )
+
         else:
-            print(f"Deja present dans le registre, aucun doublon ajoute : {args.add}")
+            print(
+                f"- {parsed['application_id']} "
+                f"[{parsed['source_type']} / "
+                f"{parsed['contract_type']}]"
+            )
+
+
+# ---------------------------------------------------------------------------
+# Arguments
+# ---------------------------------------------------------------------------
+
+def build_argument_parser() -> argparse.ArgumentParser:
+    """
+    Construit le parseur des arguments.
+    """
+
+    parser = argparse.ArgumentParser(
+        description=(
+            "Registre des candidatures déjà traitées "
+            "par le pipeline."
+        )
+    )
+
+    parser.add_argument(
+        "--registre",
+        default=str(
+            DEFAULT_REGISTRY_PATH
+        ),
+        help=(
+            "Chemin du registre. "
+            "Défaut : data/offres_traitees.csv"
+        ),
+    )
+
+    parser.add_argument(
+        "--source-type",
+        choices=SOURCE_TYPES,
+        default=SOURCE_PUBLISHED,
+        help=(
+            "Origine de la candidature : "
+            "published ou spontaneous. "
+            "Défaut : published."
+        ),
+    )
+
+    parser.add_argument(
+        "--type-candidature",
+        choices=CONTRACT_TYPES,
+        default=CONTRACT_ALTERNANCE,
+        help=(
+            "Type de contrat : alternance ou stage. "
+            "Défaut : alternance."
+        ),
+    )
+
+    parser.add_argument(
+        "--details",
+        action="store_true",
+        help=(
+            "Avec --list, affiche la source et "
+            "le type de contrat."
+        ),
+    )
+
+    action_group = parser.add_mutually_exclusive_group(
+        required=True
+    )
+
+    action_group.add_argument(
+        "--check",
+        "--check-application",
+        metavar="ID",
+        dest="check_id",
+        help=(
+            "Vérifie si cette candidature a déjà "
+            "été traitée."
+        ),
+    )
+
+    action_group.add_argument(
+        "--add",
+        "--add-application",
+        metavar="ID",
+        dest="add_id",
+        help=(
+            "Ajoute une candidature au registre."
+        ),
+    )
+
+    action_group.add_argument(
+        "--add-list",
+        metavar="ID1,ID2,...",
+        help=(
+            "Ajoute plusieurs identifiants séparés "
+            "par des virgules."
+        ),
+    )
+
+    action_group.add_argument(
+        "--list",
+        action="store_true",
+        help=(
+            "Affiche toutes les candidatures "
+            "enregistrées."
+        ),
+    )
+
+    action_group.add_argument(
+        "--nettoyer",
+        "--clean",
+        dest="clean",
+        action="store_true",
+        help=(
+            "Supprime les doublons, les lignes vides "
+            "et l'ancien en-tête."
+        ),
+    )
+
+    action_group.add_argument(
+        "--migrer",
+        "--migrate",
+        dest="migrate",
+        action="store_true",
+        help=(
+            "Convertit les anciens identifiants simples "
+            "vers le nouveau format structuré."
+        ),
+    )
+
+    return parser
+
+
+# ---------------------------------------------------------------------------
+# Programme principal
+# ---------------------------------------------------------------------------
+
+def main() -> None:
+    parser = build_argument_parser()
+    args = parser.parse_args()
+
+    registry_path = resolve_path(
+        args.registre
+    )
+
+    if args.list:
+        print_registry(
+            path=registry_path,
+            details=args.details,
+        )
+
+        return
+
+    if args.check_id:
+        already_processed = (
+            is_already_processed(
+                application_id=args.check_id,
+                path=registry_path,
+                source_type=args.source_type,
+                contract_type=(
+                    args.type_candidature
+                ),
+            )
+        )
+
+        if already_processed:
+            print(
+                "DEJA_TRAITEE: "
+                f"{args.check_id} "
+                f"[{args.source_type} / "
+                f"{args.type_candidature}]"
+            )
+
+            # Comportement historique conservé :
+            # 1 signifie déjà traitée.
+            raise SystemExit(1)
+
+        print(
+            "NON_TRAITEE: "
+            f"{args.check_id} "
+            f"[{args.source_type} / "
+            f"{args.type_candidature}]"
+        )
+
+        # Comportement historique conservé :
+        # 0 signifie non traitée.
+        raise SystemExit(0)
+
+    if args.add_id:
+        was_added = add_to_registry(
+            application_id=args.add_id,
+            path=registry_path,
+            source_type=args.source_type,
+            contract_type=args.type_candidature,
+        )
+
+        key = build_registry_key(
+            application_id=args.add_id,
+            source_type=args.source_type,
+            contract_type=args.type_candidature,
+        )
+
+        if was_added:
+            print(
+                f"Ajoutée au registre : {key}"
+            )
+
+        else:
+            print(
+                "Déjà présente dans le registre, "
+                f"aucun doublon ajouté : {key}"
+            )
+
         return
 
     if args.add_list:
-        ids = [i for i in args.add_list.split(",") if i.strip()]
-        nb_ajoutes, nb_deja_presents = add_list_to_registre(ids, path)
-        print(f"{nb_ajoutes} id(s) ajoute(s), {nb_deja_presents} deja present(s) (ignore(s)).")
-        print(f"Registre a jour : {path}")
+        application_ids = [
+            identifier.strip()
+            for identifier in args.add_list.split(",")
+            if identifier.strip()
+        ]
+
+        (
+            added_count,
+            existing_count,
+            ignored_count,
+        ) = add_list_to_registry(
+            application_ids=application_ids,
+            path=registry_path,
+            source_type=args.source_type,
+            contract_type=args.type_candidature,
+        )
+
+        print(
+            f"{added_count} candidature(s) ajoutée(s)."
+        )
+
+        print(
+            f"{existing_count} candidature(s) "
+            "déjà présente(s)."
+        )
+
+        if ignored_count:
+            print(
+                f"{ignored_count} identifiant(s) "
+                "vide(s) ignoré(s)."
+            )
+
+        print(
+            f"Registre à jour : {registry_path}"
+        )
+
         return
 
-    if args.nettoyer:
-        avant, apres = nettoyer_registre(path)
-        print(f"Nettoyage termine : {avant} ligne(s) valide(s) avant, {apres} apres suppression des doublons/lignes vides.")
+    if args.clean:
+        (
+            before_count,
+            after_count,
+            removed_duplicates,
+        ) = clean_registry(
+            path=registry_path
+        )
+
+        print(
+            "Nettoyage terminé."
+        )
+
+        print(
+            f"Lignes avant : {before_count}"
+        )
+
+        print(
+            f"Lignes après : {after_count}"
+        )
+
+        print(
+            f"Doublons supprimés : "
+            f"{removed_duplicates}"
+        )
+
+        return
+
+    if args.migrate:
+        (
+            migrated_count,
+            final_count,
+        ) = migrate_legacy_entries(
+            path=registry_path
+        )
+
+        print(
+            "Migration terminée."
+        )
+
+        print(
+            f"Anciennes entrées converties : "
+            f"{migrated_count}"
+        )
+
+        print(
+            f"Entrées finales : {final_count}"
+        )
+
+        print(
+            f"Registre : {registry_path}"
+        )
 
 
 if __name__ == "__main__":

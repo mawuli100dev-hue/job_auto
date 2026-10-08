@@ -1,78 +1,829 @@
 {
-  "Langages": {
-    "slots_total": 4,
-    "toujours": [
-      { "item": "Python, R", "tags": ["python", "r "] }
-    ],
-    "swappable": [
-      { "id": "lang_java_js_ts", "item": "Java, PHP, JavaScript, TypeScript", "tags": ["java", "php", "javascript", "typescript", "js", "ts", "node"] },
-      { "id": "lang_c_cpp", "item": "C, C++", "tags": ["c++", "langage c", "programmation c"] },
-      { "id": "lang_vba", "item": "VBA", "tags": ["vba", "macros excel", "visual basic"] },
-      { "id": "lang_sql", "item": "SQL", "tags": ["sql", "requete sql", "requetes sql", "requêtes sql", "langage sql", "transact-sql", "t-sql"] }
-    ]
-  },
-  "Outils": {
-    "slots_total": 5,
-    "toujours": [
-      { "item": "Power BI, Excel, FME", "tags": ["power bi", "powerbi", "excel", "fme"] }
-    ],
-    "swappable": [
-      { "id": "outils_data_python", "item": "Pandas, NumPy, Matplotlib", "tags": ["pandas", "numpy", "matplotlib", "manipulation de donnees", "analyse de donnees experimentales", "data cleaning"] },
-      { "id": "outils_ml_notions", "item": "Notions de Scikit-learn, TensorFlow, PyTorch, OpenCV", "tags": ["scikit-learn", "sklearn", "tensorflow", "pytorch", "keras", "opencv", "machine learning", "deep learning", "vision par ordinateur", "apprentissage automatique"] },
-      { "id": "outils_web", "item": "Nest.js, Next.js (React), Streamlit, Flask", "tags": ["nest.js", "next.js", "react", "streamlit", "flask", "framework web", "application web"] },
-      { "id": "outils_devops", "item": "GitHub, GitHub Actions, Docker, Linux", "tags": ["github", "git", "docker", "linux", "ci/cd", "versioning", "conteneurisation"] },
-      { "id": "outils_sig", "item": "QGIS, ArcGIS, N8N, Matlab", "tags": ["qgis", "arcgis", "n8n", "matlab", "sig", "systeme d'information geographique"] },
-      { "id": "outils_azure", "item": "Microsoft Azure, Microsoft Fabric, Lakehouse", "tags": ["azure", "microsoft fabric", "lakehouse", "cloud microsoft", "environnement microsoft 365", "office 365"] },
-      { "id": "outils_powerquery", "item": "Power Query, DAX, Copilot Studio", "tags": ["power query", "dax", "copilot studio", "copilot", "intelligence artificielle microsoft"] },
-      { "id": "outils_automatisation_flux", "item": "Power Automate, notions de Kafka", "tags": ["power automate", "kafka", "flink", "gestion de flux", "flux de donnees", "etl", "automatisation de processus"] },
-      { "id": "outils_excel_avance", "item": "Excel avancé", "tags": ["excel avance", "excel avancé", "tableau croise dynamique", "tcd", "formules excel", "excel expert"] },
-      { "id": "outils_erp", "item": "ERP, gestion de bases de données fournisseurs", "tags": ["erp", "gestion des stocks", "supply chain", "gestion fournisseurs", "sap", "sap bw", "sap hana", "hana"] }
-    ]
-  },
-  "Atouts": {
-    "slots_total": 5,
-    "toujours": [
-      { "id": "atout_permis", "item": "Permis de conduire B", "tags": ["permis b", "permis de conduire"] },
-      { "item": "Rigueur et autonomie technique", "tags": ["rigueur", "autonomie"] }
-    ],
-    "swappable": [
-      { "id": "atout_oral", "item": "Aisance à l'oral et en présentation", "tags": ["oral", "presentation", "communication", "ecoute active", "bon relationnel"] },
-      { "id": "atout_agile", "item": "Méthodologie Agile / Scrum", "tags": ["agile", "scrum", "sprint", "methode agile", "gestion de projet agile"] },
-      { "id": "atout_automatisation", "item": "Développement de solutions automatisées", "tags": ["automatisation", "solutions automatisees", "automatiser"] },
-      { "id": "atout_cartographie", "item": "Cartographie et visualisation de données", "tags": ["cartographie", "visualisation", "geospatial", "data visualisation"] },
-      { "id": "atout_synthese", "item": "Esprit de synthèse et d'analyse", "tags": ["synthese", "esprit d'analyse", "esprit de synthese"] },
-      { "id": "atout_organisation", "item": "Organisation et gestion de projet", "tags": ["organisation", "gestion de projet", "organise", "planification"] },
-      { "id": "atout_documentation", "item": "Documentation technique et fonctionnelle", "tags": ["documentation", "guides utilisateurs", "documentation fonctionnelle", "documentation technique"] },
-      { "id": "atout_confidentialite", "item": "Respect de la confidentialité et sécurité des données", "tags": ["confidentialite", "securite des donnees", "droits d'acces", "rgpd"] }
-    ]
-  },
-  "Bases de données": {
-    "slots_total": 3,
-    "toujours": [
-      { "item": "PostgreSQL", "tags": ["postgresql", "postgres"] }
-    ],
-    "swappable": [
-      { "id": "bdd_mysql", "item": "MySQL", "tags": ["mysql"] },
-      { "id": "bdd_oracle", "item": "Oracle", "tags": ["oracle"] },
-      { "id": "bdd_sqlserver", "item": "SQL Server / Microsoft SQL", "tags": ["sql server", "microsoft sql", "mssql", "base de donnees microsoft"] },
-      { "id": "bdd_nosql", "item": "Notions de NoSQL", "tags": ["nosql", "mongodb", "base de donnees non relationnelle"] }
-    ]
-  },
-  "Langues": {
-    "slots_total": 2,
-    "toujours": [
-      { "item": "Anglais: niveau B2", "tags": ["anglais", "english"] }
-    ],
-    "swappable": [
-      { "id": "langue_allemand", "item": "Allemand: Goethe Zertifikat B2", "tags": ["allemand", "deutsch", "german"] }
-    ]
-  },
-  "Loisirs": {
-    "slots_total": 2,
-    "toujours": [],
-    "swappable": [
-      { "id": "loisir_musique", "item": "Guitare basse et du tuba", "tags": [] },
-      { "id": "loisir_cuisine", "item": "Cuisine : pâtisserie", "tags": [] }
-    ]
-  }
+  "_lisez_moi": [
+    "Format v3 : chaque section correspond à un bloc du CV manuel.",
+    "type = 'domaine' : section spécialisée affichée EN PREMIER, seulement si l'offre correspond (une seule retenue par CV, la plus pertinente).",
+    "type = 'fixe' : section toujours affichée, dans l'ordre du fichier.",
+    "affichage = 'puces' : un élément par puce. affichage = 'groupe' : éléments regroupés sur une même puce, séparés par 'separateur', au plus 'max_par_puce' par puce.",
+    "puce_seule = true : l'élément occupe toujours sa propre puce (ex. permis).",
+    "remplir_sans_correspondance = false : un élément 'swappable' n'est ajouté que si l'offre le mentionne.",
+    "Les tags servent au matching avec l'offre : éviter les tags trop génériques (python, analyse...) dans les sections 'domaine'.",
+    "Sections 'domaine' : le LLM choisit la section ET les éléments les plus précis pour l'offre (slots_total éléments). Les tags servent de solution de secours si le LLM échoue."
+  ],
+  "sections": [
+    {
+      "id": "dom_bi",
+      "titre": "Business Intelligence & Reporting",
+      "type": "domaine",
+      "affichage": "puces",
+      "slots_total": 3,
+      "seuil_affichage": 4,
+      "swappable": [
+        {
+          "id": "bi_powerbi",
+          "item": "Power BI | Power Query, DAX | tableaux de bord et indicateurs (KPI)",
+          "tags": [
+            "power bi",
+            "powerbi",
+            "power query",
+            "dax",
+            "tableau de bord",
+            "tableaux de bord",
+            "dashboard",
+            "kpi",
+            "indicateurs",
+            "reporting",
+            "business intelligence",
+            "informatique décisionnelle",
+            "décisionnel",
+            "bi"
+          ]
+        },
+        {
+          "id": "bi_etl",
+          "item": "ETL avec FME : extraction, transformation et chargement de données",
+          "tags": [
+            "etl",
+            "fme",
+            "alimentation",
+            "flux de données",
+            "talend",
+            "ssis",
+            "intégration de données"
+          ]
+        },
+        {
+          "id": "bi_modelisation_sql",
+          "item": "Modélisation de bases relationnelles et requêtes SQL",
+          "tags": [
+            "sql",
+            "modélisation de données",
+            "modèle de données",
+            "schéma relationnel",
+            "entrepôt de données",
+            "data warehouse",
+            "base de données relationnelle",
+            "requêtes"
+          ]
+        },
+        {
+          "id": "bi_streamlit",
+          "item": "Tableaux de bord interactifs Streamlit (cartes, scénarios, filtres)",
+          "tags": [
+            "streamlit",
+            "application de visualisation",
+            "dataviz",
+            "visualisation interactive",
+            "tableau de bord interactif"
+          ]
+        },
+        {
+          "id": "bi_excel",
+          "item": "Excel avancé (TCD, RECHERCHEX), VBA",
+          "tags": [
+            "excel avancé",
+            "tableau croisé dynamique",
+            "tableaux croisés dynamiques",
+            "tcd",
+            "vba",
+            "macros",
+            "recherchev",
+            "recherchex"
+          ]
+        },
+        {
+          "id": "bi_erp",
+          "item": "Notions d'ERP et de gestion de bases fournisseurs (SAP)",
+          "tags": [
+            "erp",
+            "sap",
+            "sap bw",
+            "sap hana",
+            "hana",
+            "supply chain",
+            "achats",
+            "fournisseurs",
+            "gestion des stocks"
+          ]
+        },
+        {
+          "id": "bi_notions_outils",
+          "item": "Notions de Tableau, Qlik et Looker",
+          "tags": [
+            "tableau software",
+            "tableau desktop",
+            "qlik",
+            "qlik sense",
+            "qlikview",
+            "looker",
+            "looker studio"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dom_stats",
+      "titre": "Statistique & Analyse de données",
+      "type": "domaine",
+      "affichage": "puces",
+      "slots_total": 3,
+      "seuil_affichage": 4,
+      "swappable": [
+        {
+          "id": "stats_tendances",
+          "item": "Analyse de tendances sur séries longues (66 ans de mesures)",
+          "tags": [
+            "séries temporelles",
+            "série temporelle",
+            "tendance",
+            "tendances",
+            "historique",
+            "évolution",
+            "suivi temporel",
+            "prévision"
+          ]
+        },
+        {
+          "id": "stats_ecarts",
+          "item": "Comparaison modèle / mesures terrain et quantification des écarts (biais)",
+          "tags": [
+            "contrôle qualité",
+            "qualité des données",
+            "écart",
+            "écarts",
+            "biais",
+            "mesure",
+            "mesures",
+            "métrologie",
+            "fiabilité",
+            "validation",
+            "anomalies",
+            "défaillance",
+            "défaillances"
+          ]
+        },
+        {
+          "id": "stats_echantillonnage",
+          "item": "Échantillonnage et plans d'expérience sur données d'enquête",
+          "tags": [
+            "échantillonnage",
+            "plans d'expérience",
+            "plan d'expérience",
+            "enquête",
+            "enquêtes",
+            "sondage",
+            "questionnaire",
+            "design of experiments"
+          ]
+        },
+        {
+          "id": "stats_exploration",
+          "item": "Nettoyage, exploration et préparation de jeux de données",
+          "tags": [
+            "nettoyage de données",
+            "data cleaning",
+            "préparation des données",
+            "exploration de données",
+            "analyse exploratoire",
+            "qualité des données",
+            "collecter"
+          ]
+        },
+        {
+          "id": "stats_modelisation",
+          "item": "Modélisation statistique : régression, classification",
+          "tags": [
+            "modélisation statistique",
+            "régression",
+            "classification",
+            "modèle statistique",
+            "statisticien",
+            "statistique",
+            "statistiques",
+            "biostatistique",
+            "économétrie"
+          ]
+        },
+        {
+          "id": "stats_restitution",
+          "item": "Restitution de résultats : figures, cartes et présentations",
+          "tags": [
+            "restitution",
+            "visualisation de données",
+            "communication des résultats",
+            "présentation",
+            "rapport",
+            "rapports",
+            "synthèse"
+          ]
+        },
+        {
+          "id": "stats_notions_logiciels",
+          "item": "Notions de SAS et Dataiku",
+          "tags": [
+            "sas base",
+            "sas enterprise guide",
+            "sas viya",
+            "logiciel sas",
+            "dataiku"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dom_data_eng",
+      "titre": "Data Engineering & Cloud",
+      "type": "domaine",
+      "affichage": "puces",
+      "slots_total": 3,
+      "seuil_affichage": 4,
+      "swappable": [
+        {
+          "id": "de_pipelines",
+          "item": "Pipelines de données Python (pandas, xarray) de la collecte à la restitution",
+          "tags": [
+            "pipeline de données",
+            "pipelines",
+            "data engineer",
+            "data engineering",
+            "ingénierie des données",
+            "big data",
+            "automatisation"
+          ]
+        },
+        {
+          "id": "de_multisources",
+          "item": "Intégration de sources hétérogènes (modèles, réanalyses, mesures terrain)",
+          "tags": [
+            "sources multiples",
+            "bases de données multiples",
+            "données hétérogènes",
+            "intégration de données",
+            "consolidation",
+            "croisement de données",
+            "mes",
+            "capteurs",
+            "machines",
+            "iot"
+          ]
+        },
+        {
+          "id": "de_cloud",
+          "item": "Microsoft Azure, Microsoft Fabric, Lakehouse",
+          "tags": [
+            "azure",
+            "microsoft fabric",
+            "fabric",
+            "lakehouse",
+            "data lake",
+            "cloud",
+            "cloud computing"
+          ]
+        },
+        {
+          "id": "de_flux",
+          "item": "Notions de Power Automate, n8n et Kafka (automatisation, flux)",
+          "tags": [
+            "kafka",
+            "flink",
+            "streaming",
+            "power automate",
+            "n8n",
+            "orchestration",
+            "automatisation de processus",
+            "workflow"
+          ]
+        },
+        {
+          "id": "de_devops",
+          "item": "Docker, Linux | CI/CD avec GitHub Actions",
+          "tags": [
+            "docker",
+            "linux",
+            "ci/cd",
+            "devops",
+            "conteneurisation",
+            "intégration continue",
+            "déploiement continu",
+            "kubernetes"
+          ]
+        },
+        {
+          "id": "de_api",
+          "item": "API REST et bases relationnelles (conception backend)",
+          "tags": [
+            "api",
+            "api rest",
+            "backend",
+            "exposition de données",
+            "services de données"
+          ]
+        },
+        {
+          "id": "de_notions_bigdata",
+          "item": "Notions de Spark / PySpark, Databricks et Hadoop (traitement distribué)",
+          "tags": [
+            "spark",
+            "pyspark",
+            "apache spark",
+            "databricks",
+            "hadoop",
+            "hdfs",
+            "traitement distribué",
+            "données massives",
+            "big data"
+          ]
+        },
+        {
+          "id": "de_notions_orchestration",
+          "item": "Notions d'Airflow et de dbt : orchestration de pipelines, ELT",
+          "tags": [
+            "airflow",
+            "apache airflow",
+            "dbt",
+            "elt",
+            "orchestration",
+            "ordonnancement"
+          ]
+        },
+        {
+          "id": "de_notions_cloud",
+          "item": "Notions de cloud AWS, GCP (BigQuery) et Snowflake",
+          "tags": [
+            "aws",
+            "amazon web services",
+            "gcp",
+            "google cloud",
+            "bigquery",
+            "snowflake",
+            "s3",
+            "entrepôt de données cloud"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dom_ia",
+      "titre": "Data Science & IA",
+      "type": "domaine",
+      "affichage": "puces",
+      "slots_total": 3,
+      "seuil_affichage": 4,
+      "defaut": true,
+      "swappable": [
+        {
+          "id": "ia_ml",
+          "item": "Notions de Scikit-learn, TensorFlow, PyTorch",
+          "tags": [
+            "machine learning",
+            "apprentissage automatique",
+            "deep learning",
+            "scikit-learn",
+            "sklearn",
+            "tensorflow",
+            "pytorch",
+            "keras",
+            "intelligence artificielle",
+            "ia",
+            "modèle prédictif",
+            "modélisation prédictive",
+            "data scientist",
+            "data science"
+          ]
+        },
+        {
+          "id": "ia_scratch",
+          "item": "Régression logistique from scratch : fonction de coût, descente de gradient",
+          "tags": [
+            "régression logistique",
+            "classification",
+            "algorithmes",
+            "mathématiques",
+            "optimisation",
+            "descente de gradient"
+          ]
+        },
+        {
+          "id": "ia_detection",
+          "item": "Détection d'objets YOLOv8 (mAP50 de 0,583 sur DOTA et xView)",
+          "tags": [
+            "yolo",
+            "yolov8",
+            "détection d'objets",
+            "computer vision",
+            "vision par ordinateur",
+            "deep learning"
+          ]
+        },
+        {
+          "id": "ia_segmentation",
+          "item": "Segmentation d'images SAM2, OpenCV (détection supérieure à 85 %)",
+          "tags": [
+            "segmentation",
+            "traitement d'images",
+            "image processing",
+            "opencv",
+            "sam",
+            "vision par ordinateur",
+            "imagerie"
+          ]
+        },
+        {
+          "id": "ia_nlp",
+          "item": "NLP : tokenisation, nettoyage et vectorisation de texte",
+          "tags": [
+            "nlp",
+            "traitement du langage",
+            "traitement automatique du langage",
+            "llm",
+            "texte",
+            "chatbot",
+            "ia générative"
+          ]
+        },
+        {
+          "id": "ia_notions_llm",
+          "item": "Notions de LLM, RAG et LangChain (IA générative)",
+          "tags": [
+            "llm",
+            "llms",
+            "rag",
+            "langchain",
+            "ia générative",
+            "genai",
+            "intelligence artificielle générative",
+            "agents ia",
+            "chatgpt"
+          ]
+        },
+        {
+          "id": "ia_notions_mlops",
+          "item": "Notions de MLOps : MLflow, Kubernetes, FastAPI",
+          "tags": [
+            "mlops",
+            "mlflow",
+            "kubernetes",
+            "k8s",
+            "fastapi",
+            "déploiement de modèles",
+            "industrialisation",
+            "mise en production"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dom_sig",
+      "titre": "Télédétection & SIG",
+      "type": "domaine",
+      "affichage": "puces",
+      "slots_total": 3,
+      "seuil_affichage": 4,
+      "swappable": [
+        {
+          "id": "sig_outils",
+          "item": "QGIS | GeoPandas, Shapely, Cartopy, Folium | xarray | FME",
+          "tags": [
+            "qgis",
+            "arcgis",
+            "geopandas",
+            "shapely",
+            "cartopy",
+            "folium",
+            "xarray",
+            "sig",
+            "géospatial",
+            "géomatique",
+            "système d'information géographique",
+            "données spatiales"
+          ]
+        },
+        {
+          "id": "sig_donnees_satellitaires",
+          "item": "Traitement et croisement de données satellitaires multisources (modèles/réanalyses, observations terrain)",
+          "tags": [
+            "télédétection",
+            "imagerie satellitaire",
+            "satellite",
+            "satellitaire",
+            "données satellitaires",
+            "réanalyse",
+            "netcdf",
+            "climat",
+            "climatologie",
+            "observation de la terre",
+            "sentinel",
+            "copernicus"
+          ]
+        },
+        {
+          "id": "sig_cartographie",
+          "item": "Cartographie spatiale géoréférencée, projections, analyse de tendances spatio-temporelles",
+          "tags": [
+            "cartographie",
+            "géoréférencement",
+            "projection",
+            "spatio-temporel",
+            "carte",
+            "cartes"
+          ]
+        },
+        {
+          "id": "sig_formats",
+          "item": "Shapefile, GeoJSON, rasters géoréférencés",
+          "tags": [
+            "shapefile",
+            "geojson",
+            "raster",
+            "rasters",
+            "vecteur",
+            "formats géospatiaux"
+          ]
+        },
+        {
+          "id": "sig_detection_objets",
+          "item": "Détection d'objets sur imagerie satellitaire (YOLOv8), détection de changements T0/T1",
+          "tags": [
+            "yolo",
+            "yolov8",
+            "détection d'objets",
+            "détection de changements",
+            "imagerie satellitaire",
+            "imagerie aérienne"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "traitement",
+      "titre": "Traitement de données",
+      "type": "fixe",
+      "affichage": "groupe",
+      "separateur": " | ",
+      "max_par_puce": 3,
+      "slots_total": 3,
+      "remplir_sans_correspondance": false,
+      "toujours": [
+        {
+          "id": "td_langages",
+          "item": "Python, R, SQL"
+        },
+        {
+          "id": "td_bi",
+          "item": "Power BI, Excel"
+        }
+      ],
+      "swappable": [
+        {
+          "id": "td_pandas",
+          "item": "Pandas, NumPy, Matplotlib",
+          "tags": [
+            "pandas",
+            "numpy",
+            "matplotlib",
+            "manipulation de données",
+            "nettoyage de données",
+            "data cleaning",
+            "visualisation de données"
+          ]
+        },
+        {
+          "id": "td_vba",
+          "item": "VBA",
+          "tags": [
+            "vba",
+            "macros excel",
+            "macro excel",
+            "visual basic"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "developpement",
+      "titre": "Développement",
+      "type": "fixe",
+      "affichage": "puces",
+      "slots_total": 2,
+      "remplir_sans_correspondance": true,
+      "toujours": [
+        {
+          "id": "dev_frameworks",
+          "item": "Streamlit, Flask, Nest.js, Next.js | Git, GitHub Actions, Docker"
+        }
+      ],
+      "swappable": [
+        {
+          "id": "dev_langages",
+          "item": "Java, PHP, JavaScript, TypeScript, C, C++",
+          "tags": [
+            "java",
+            "php",
+            "javascript",
+            "typescript",
+            "c++",
+            "langage c",
+            "développement web",
+            "développement logiciel",
+            "programmation"
+          ]
+        },
+        {
+          "id": "dev_api",
+          "item": "API REST, architecture backend modulaire, authentification",
+          "tags": [
+            "api",
+            "api rest",
+            "backend",
+            "fullstack",
+            "microservices",
+            "architecture logicielle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "atouts",
+      "titre": "Atouts",
+      "type": "fixe",
+      "affichage": "groupe",
+      "separateur": " | ",
+      "max_par_puce": 2,
+      "slots_total": 3,
+      "remplir_sans_correspondance": true,
+      "toujours": [
+        {
+          "id": "atout_permis",
+          "item": "Permis de conduire B",
+          "puce_seule": true
+        },
+        {
+          "id": "atout_rigueur",
+          "item": "Rigueur et autonomie technique"
+        }
+      ],
+      "swappable": [
+        {
+          "id": "atout_synthese_projet",
+          "item": "Esprit de synthèse, d'analyse et de gestion de projet",
+          "tags": [
+            "synthèse",
+            "esprit d'analyse",
+            "esprit de synthèse",
+            "capacité d'analyse",
+            "gestion de projet",
+            "organisation",
+            "planification"
+          ]
+        },
+        {
+          "id": "atout_oral",
+          "item": "Aisance à l'oral et en présentation",
+          "tags": [
+            "oral",
+            "présentation",
+            "communication",
+            "bon relationnel",
+            "prise de parole",
+            "vulgarisation",
+            "restitution"
+          ]
+        },
+        {
+          "id": "atout_agile",
+          "item": "Méthodologie Agile / Scrum",
+          "tags": [
+            "agile",
+            "scrum",
+            "sprint",
+            "méthode agile"
+          ]
+        },
+        {
+          "id": "atout_documentation",
+          "item": "Documentation technique et fonctionnelle",
+          "tags": [
+            "documentation",
+            "guides utilisateurs",
+            "documentation fonctionnelle",
+            "documentation technique",
+            "rédaction technique",
+            "spécifications"
+          ]
+        },
+        {
+          "id": "atout_confidentialite",
+          "item": "Respect de la confidentialité des données (RGPD)",
+          "tags": [
+            "confidentialité",
+            "sécurité des données",
+            "rgpd",
+            "protection des données",
+            "données sensibles"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bdd",
+      "titre": "Bases de données",
+      "type": "fixe",
+      "affichage": "groupe",
+      "separateur": ", ",
+      "max_par_puce": 6,
+      "slots_total": 4,
+      "remplir_sans_correspondance": true,
+      "toujours": [
+        {
+          "id": "bdd_postgresql",
+          "item": "PostgreSQL"
+        }
+      ],
+      "swappable": [
+        {
+          "id": "bdd_mysql",
+          "item": "MySQL",
+          "tags": [
+            "mysql"
+          ]
+        },
+        {
+          "id": "bdd_mongodb",
+          "item": "MongoDB",
+          "tags": [
+            "mongodb",
+            "nosql",
+            "base de données non relationnelle"
+          ]
+        },
+        {
+          "id": "bdd_neo4j",
+          "item": "Neo4j",
+          "tags": [
+            "neo4j",
+            "graphe",
+            "graph database",
+            "cypher"
+          ]
+        },
+        {
+          "id": "bdd_oracle",
+          "item": "Oracle",
+          "tags": [
+            "oracle"
+          ]
+        },
+        {
+          "id": "bdd_sqlserver",
+          "item": "SQL Server",
+          "tags": [
+            "sql server",
+            "microsoft sql",
+            "mssql",
+            "t-sql",
+            "transact-sql"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "langues",
+      "titre": "Langues",
+      "type": "fixe",
+      "affichage": "groupe",
+      "separateur": " | ",
+      "max_par_puce": 2,
+      "slots_total": 2,
+      "remplir_sans_correspondance": true,
+      "toujours": [
+        {
+          "id": "langue_anglais",
+          "item": "Anglais : niveau B2"
+        },
+        {
+          "id": "langue_allemand",
+          "item": "Allemand : Goethe Zertifikat B2"
+        }
+      ]
+    },
+    {
+      "id": "loisirs",
+      "titre": "Loisirs",
+      "type": "fixe",
+      "affichage": "groupe",
+      "separateur": " | ",
+      "max_par_puce": 2,
+      "slots_total": 2,
+      "remplir_sans_correspondance": true,
+      "toujours": [
+        {
+          "id": "loisir_musique",
+          "item": "Guitare basse et tuba"
+        },
+        {
+          "id": "loisir_cuisine",
+          "item": "Cuisine : pâtisserie"
+        }
+      ]
+    }
+  ]
 }

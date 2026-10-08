@@ -20,10 +20,18 @@ venv/
 env/
 ENV/
 
-# --- Données générées par le projet (CV/lettres/candidatures) ---
-data/candidatures/
-data/offres_filtrees/
+# --- Données personnelles et générées : jamais sur GitHub ---
+# Offres collectées, CSV filtrés, dossiers de candidature (CV, lettres),
+# registre, index et annexes personnelles. Seul le code est publié.
+data/
+spont/data/
+*.csv
+*.xlsx
+*.xls
 *.pdf
+
+# --- Copies du code en texte (inutiles sur GitHub) ---
+src/contenu_*.txt
 *.docx
 !/templates/**/*.pdf
 !/templates/**/*.docx
@@ -31,6 +39,9 @@ data/offres_filtrees/
 # --- Fichiers HTML intermédiaires générés (cv_builder / letter_builder) ---
 *.html
 !templates/**/*.html
+
+# --- Aperçus générés par preview_cv.py ---
+src/preview_output/
 
 # --- Logs et fichiers temporaires ---
 *.log
