@@ -11,6 +11,10 @@ from common.text_normalizer import (
     contains_whole_expression,
     normalize_text,
 )
+from letter.advanced_level import (
+    advanced_level_sentence,
+    needs_advanced_level_sentence,
+)
 from config.known_tools import (
     KNOWN_TOOLS_WITHOUT_PROJECT,
 )
@@ -137,13 +141,20 @@ def clean_experience_for_prompt(
         text = re.sub(r"\s*:?\s*https?://\S+", "", text)
         bullets.append(text.strip())
 
-    return {
+    cleaned = {
         "titre": experience.get("titre", ""),
         "contexte": experience.get("sous_titre", ""),
         "structure": experience.get("structure", ""),
         "periode": experience.get("periode", ""),
         "realisations": bullets,
     }
+
+    # Ce que la lettre ne doit jamais affirmer sur ce projet
+    # (champ « garde_fous » de experiences.json).
+    if experience.get("garde_fous"):
+        cleaned["a_ne_jamais_ecrire"] = list(experience["garde_fous"])
+
+    return cleaned
 
 
 class LetterPromptBuilder:
@@ -193,6 +204,15 @@ class LetterPromptBuilder:
                 "fois, sans expliquer le calendrier de l'école ni "
                 "aucune contrainte de dates, et sans ajouter de mois "
                 f"ou de durée) : {context.availability}"
+            )
+
+        if needs_advanced_level_sentence(target, context.availability_frame):
+            candidate_lines.append(
+                "Niveau visé par l'offre : master (M1/M2) ou école "
+                "d'ingénieurs. La lettre DOIT contenir mot pour mot cette "
+                "phrase, de préférence dans le premier paragraphe ou dans "
+                "celui sur l'écart : « "
+                f"{advanced_level_sentence(target.contract_type)} »"
             )
 
         if (
@@ -272,10 +292,12 @@ class LetterPromptBuilder:
 
         return f"""
 RÈGLES DE FOND (impératives)
+- Si une expérience de <experiences_du_cv> contient « a_ne_jamais_ecrire », respecte chacune de ces consignes à la lettre quand tu parles de ce projet.
 - N'invente aucun fait : expérience, outil, chiffre, durée, diplôme, valeur ou actualité de l'entreprise, nom de produit. Tout doit venir des blocs ci-dessus.
 - Durée et dates du contrat : n'en indique aucune (« d'un an », « de 12 mois », date de fin) si elle ne figure pas mot pour mot dans l'offre ou dans le bloc <candidat>. Dis simplement « cette alternance » ou « ce stage ».
 - N'utilise que des outils présents dans <experiences_du_cv> ou <competences_du_cv>. Si l'offre demande un outil absent du CV, n'affirme pas le maîtriser.
 - Exception : les outils du bloc <outils_connus_sans_projet>, s'il existe. Le candidat en connaît le fonctionnement et les concepts, sans les avoir encore utilisés dans un projet complet. Cite-les tous ensemble, en une seule phrase honnête et positive, de préférence dans le paragraphe sur l'écart, par exemple : « Je connais le fonctionnement de PySpark et de Databricks et les concepts qui les sous-tendent, sans les avoir encore utilisés dans un projet complet. » N'écris jamais qu'il ne les connaît pas, et n'invente aucun projet, résultat ou durée d'utilisation avec ces outils.
+- Le candidat n'a pas présenté lui-même ses résultats au 11th Postgraduate ZooArchaeology Forum : écris « mes résultats ont été présentés au 11th Postgraduate ZooArchaeology Forum (Université de Lisbonne, juin 2026) », jamais « j'ai présenté ». De façon générale, ne transforme jamais une action collective ou passive du CV en action du candidat seul.
 - Reste à la hauteur d'un étudiant : pas de « expert », « maîtrise parfaite », « solide expérience professionnelle ». Les projets académiques ou personnels sont présentés comme tels, pas comme des emplois.
 - Ne recopie pas des phrases entières de l'offre ; reformule.
 - Ne mentionne ni lien, ni URL, ni identifiant technique.

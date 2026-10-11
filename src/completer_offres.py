@@ -7,8 +7,9 @@ Complète la description des offres repérées par les alertes e-mail
 1. le script affiche l'offre et l'ouvre dans ton navigateur ;
 2. tu sélectionnes la description sur la page (« À propos de l'offre
    d'emploi ») et tu la copies (Ctrl+C) ;
-3. tu appuies sur Entrée : le script lit le texte copié et range l'offre
-   complétée dans data/linkedin/1_brutes/<type>/<date>/.
+3. tu appuies sur Entrée (sans coller le texte) : le script lit le texte
+   copié et range l'offre complétée dans data/linkedin/1_brutes/<type>/<date>/.
+   Si tu colles quand même le texte dans la console, il est accepté.
 
 Tu restes maître de chaque page consultée : aucune page n'est lue
 automatiquement.
@@ -72,9 +73,33 @@ def clean_description(text: str) -> str:
     return text.strip()
 
 
+def flush_pending_input() -> None:
+    """
+    Vide les lignes déjà tapées ou collées en attente : un texte collé
+    sur plusieurs lignes ne doit pas servir de réponse aux questions
+    suivantes.
+    """
+
+    try:
+        import msvcrt
+    except ImportError:
+        return
+
+    while msvcrt.kbhit():
+        msvcrt.getwch()
+
+
+def read_answer(prompt: str) -> str:
+    flush_pending_input()
+    answer = input(prompt)
+    flush_pending_input()
+
+    return answer.strip()
+
+
 def ask(prompt: str, choices: dict[str, str]) -> str:
     while True:
-        answer = input(prompt).strip().lower()
+        answer = read_answer(prompt).lower()
 
         if answer in choices:
             return choices[answer]
@@ -180,7 +205,14 @@ def main() -> None:
         webbrowser.open(row["url"])
 
         while True:
-            action = input("   Entrée = lire la description copiée | p = passer | x = sans intérêt | q = quitter : ").strip().lower()
+            answer = read_answer("   Entrée = lire la description copiée | p = passer | x = sans intérêt | q = quitter : ")
+            action = answer.lower()
+
+            # Description collée dans la console au lieu d'un simple
+            # Entrée : le texte complet est dans le presse-papiers.
+            if len(answer) > 20:
+                print("   (texte collé : la description est lue dans le presse-papiers)")
+                action = ""
 
             if action == "q":
                 save_rows(path, rows, fieldnames)
@@ -201,14 +233,27 @@ def main() -> None:
 
             text = clean_description(read_clipboard())
 
-            if not text or text == clean_description(previous_clipboard):
-                print("   Le presse-papiers n'a pas changé : copie la description, puis Entrée.")
+            if not text:
+                print("   Le presse-papiers est vide : copie la description, puis Entrée.")
                 continue
+
+            # Texte identique à la dernière description lue : souvent un
+            # oubli de copie, mais une entreprise publie parfois la même
+            # annonce dans plusieurs villes (Sogeti Toulouse et Aix).
+            if text == clean_description(previous_clipboard):
+                same = ask(
+                    "   Même texte que l'offre précédente (oubli de copie, ou même "
+                    "annonce dans une autre ville ?). L'enregistrer quand même ? (o/n) : ",
+                    {"o": "oui", "oui": "oui", "n": "non", "non": "non"},
+                )
+
+                if same == "non":
+                    continue
 
             if len(text) < MIN_DESCRIPTION_LENGTH:
                 keep = ask(
                     f"   Texte court ({len(text)} caractères). Le garder ? (o/n) : ",
-                    {"o": "oui", "n": "non"},
+                    {"o": "oui", "oui": "oui", "n": "non", "non": "non"},
                 )
 
                 if keep == "non":
@@ -217,7 +262,12 @@ def main() -> None:
             if not row.get("type_candidature"):
                 row["type_candidature"] = ask(
                     "   Type de contrat ? (s = stage, a = alternance) : ",
-                    {"s": "stage", "a": "alternance"},
+                    {
+                        "s": "stage",
+                        "stage": "stage",
+                        "a": "alternance",
+                        "alternance": "alternance",
+                    },
                 )
 
             row["description"] = text

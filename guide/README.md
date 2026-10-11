@@ -35,6 +35,10 @@ Copie ce bloc dans PowerShell à l'ouverture de chaque nouvelle fenêtre :
 cd "C:\Users\amavi\projects-studio\Nouveau dossier\job_automation"
 conda activate job_auto
 
+# Accents corrects dans le terminal (é, è, à...)
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$env:PYTHONIOENCODING = "utf-8"
+
 # Les mots-clés de recherche
 $MOTS = "data analyst,data scientist,data engineer,data science,analyste de données,analyste data,statistique,statistic,statisticien,BI,power bi,big data,machine learning,deep learning,computer vision,vision par ordinateur,intelligence artificielle,IA,AI,géomatique,SIG,télédétection"
 
@@ -65,6 +69,48 @@ GMAIL_APP_PASSWORD=...   (alertes LinkedIn)
 ```
 
 PASS, Engagement Jeunes et L'Étudiant ne demandent aucune clé.
+
+---
+
+## Tout lancer d'un coup
+
+`run_all_sources.ps1` enchaîne, source après source (France Travail, La Bonne
+Alternance, PASS, Engagement Jeunes, L'Étudiant ; alternance et stage) :
+
+1. **Phase 1, gratuite** : collecte puis filtre de chaque source. Un récapitulatif
+   affiche le nombre d'offres prêtes et le **coût estimé**, puis demande confirmation.
+2. **Phase 2, payante** (si tu réponds `o`) : CV, lettre, dossier PDF compressé et
+   registre, pour chaque source.
+
+```powershell
+conda activate job_auto
+
+# Tout : collecte, filtre, récapitulatif, puis génération après confirmation
+.\run_all_sources.ps1
+
+# Seulement la collecte et le filtre (aucun appel payant)
+.\run_all_sources.ps1 -SansGeneration
+
+# Quelques sources ou un seul type, avec au plus 3 candidatures par lot
+.\run_all_sources.ps1 -Sources pass, engagement_jeunes -Types stage -MaxOffresParLot 3
+```
+
+| Option | Effet |
+|--------|-------|
+| `-Sources pass, letudiant` | Sources à traiter (défaut : toutes) |
+| `-Types stage` | `alternance`, `stage` ou les deux (défaut) |
+| `-MaxOffresParLot 5` | Au plus 5 candidatures par source et par type |
+| `-SansGeneration` | S'arrête après le récapitulatif : aucun appel payant |
+| `-SansConfirmation` | Lance la génération sans demander (lancement planifié) |
+| `-Mots "..."`, `-Exclues "..."` | Mots-clés et entreprises exclues (défaut : ceux de ce guide) |
+
+- LinkedIn n'est pas inclus : ses offres demandent l'étape manuelle de
+  `completer_offres.py` (voir [source_linkedin.md](source_linkedin.md)).
+- La phase 1 prend du temps : quelques minutes par source, plus pour Engagement Jeunes
+  et L'Étudiant avec toute la liste `$MOTS`. Lors d'un test, PASS stages a pris 4 minutes.
+- Le déroulé complet est enregistré dans `data\logs\run_all_sources_<date>.txt`.
+- Si tu refuses la génération, les CSV filtrés restent prêts : tu peux lancer
+  `run_pipeline.ps1` plus tard sur ceux de ton choix.
 
 ---
 

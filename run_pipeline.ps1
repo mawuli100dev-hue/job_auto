@@ -104,6 +104,10 @@
 
         data\extra
 
+.PARAMETER SansCompression
+    Ne compresse pas CV_LM_AMAVIGAN.pdf et LM_x_AMAVIGAN.pdf après la
+    fusion (compress_dossiers.py).
+
 .PARAMETER SansAnnexes
     Demande à merge_dossier.py de ne pas ajouter les annexes.
 
@@ -198,6 +202,8 @@ param(
 
     [switch]$SansAnnexes,
 
+    [switch]$SansCompression,
+
     [ValidateRange(0, 86400)]
     [int]$DelaiEntreOffresSec = 4,
 
@@ -216,6 +222,13 @@ param(
 # ---------------------------------------------------------------------------
 
 $ErrorActionPreference = "Stop"
+
+# Accents : Python écrit en UTF-8 et la console doit lire et afficher en
+# UTF-8 (sinon « é » devient « Ã© » avec la page de codes 850 de Windows).
+$env:PYTHONIOENCODING = "utf-8"
+$env:PYTHONUTF8 = "1"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 
 $ProjectRoot = $PSScriptRoot
 
@@ -236,6 +249,10 @@ $MergeDossierScript = Join-Path `
 $RegistreScript = Join-Path `
     $ProjectRoot `
     "src\registre_offres.py"
+
+$CompressScript = Join-Path `
+    $ProjectRoot `
+    "src\compress_dossiers.py"
 
 $CheckDuplicateScript = Join-Path `
     $ProjectRoot `
@@ -621,6 +638,11 @@ try {
 
     Test-RequiredScript `
         -ScriptPath $RegistreScript
+
+    if (-not $SkipMerge -and -not $SansCompression) {
+        Test-RequiredScript `
+            -ScriptPath $CompressScript
+    }
 
     if (-not $SkipMerge) {
         Test-RequiredScript `
@@ -1069,6 +1091,19 @@ foreach ($offre in $offres) {
                 -StepName $etapeEnCours `
                 -ScriptPath $MergeDossierScript `
                 -Arguments $mergeArguments
+
+            # ---------------------------------------------------------------
+            # Compression des dossiers PDF à envoyer
+            # ---------------------------------------------------------------
+
+            if (-not $SansCompression) {
+                $etapeEnCours = "compress_dossiers.py"
+
+                Invoke-PythonStep `
+                    -StepName $etapeEnCours `
+                    -ScriptPath $CompressScript `
+                    -Arguments @("--offer-id", $id)
+            }
         }
 
         # -------------------------------------------------------------------

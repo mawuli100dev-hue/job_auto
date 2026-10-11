@@ -358,6 +358,18 @@
             "s3",
             "entrepôt de données cloud"
           ]
+        },
+        {
+          "id": "de_data_lake_parquet",
+          "item": "Data lake local en Parquet (PyArrow) et chaîne d'ingestion reproductible",
+          "tags": [
+            "parquet",
+            "pyarrow",
+            "data lake",
+            "ingestion",
+            "reproductibilité",
+            "flux rss"
+          ]
         }
       ]
     },
@@ -429,7 +441,7 @@
         },
         {
           "id": "ia_nlp",
-          "item": "NLP : tokenisation, nettoyage et vectorisation de texte",
+          "item": "NLP : tokenisation, vectorisation TF-IDF, classification de textes, corpus multilingues",
           "tags": [
             "nlp",
             "traitement du langage",
@@ -437,7 +449,10 @@
             "llm",
             "texte",
             "chatbot",
-            "ia générative"
+            "ia générative",
+            "tf-idf",
+            "classification de textes",
+            "multilingue"
           ]
         },
         {
@@ -467,6 +482,147 @@
             "déploiement de modèles",
             "industrialisation",
             "mise en production"
+          ]
+        },
+        {
+          "id": "ia_ner_spacy",
+          "item": "NLP avec spaCy : extraction d'entités nommées, règles métier, découpage en phrases",
+          "tags": [
+            "spacy",
+            "ner",
+            "entités nommées",
+            "extraction d'information",
+            "traitement automatique du langage"
+          ]
+        },
+        {
+          "id": "ia_evaluation_critique",
+          "item": "Évaluation critique de modèles : fuite de données, dérive temporelle, validation terrain",
+          "tags": [
+            "data leakage",
+            "fuite de données",
+            "dérive",
+            "drift",
+            "robustesse",
+            "validation de modèle",
+            "évaluation de modèles",
+            "biais"
+          ]
+        },
+        {
+          "id": "ia_anomalies_texte",
+          "item": "Détection d'anomalies non supervisée sur flux de textes (score z, convergence de sources)",
+          "tags": [
+            "détection d'anomalies",
+            "non supervisé",
+            "apprentissage non supervisé",
+            "signaux faibles",
+            "séries temporelles"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dom_osint",
+      "titre": "Renseignement OSINT & NLP",
+      "type": "domaine",
+      "affichage": "puces",
+      "slots_total": 3,
+      "seuil_affichage": 4,
+      "swappable": [
+        {
+          "id": "osint_chaine",
+          "item": "Chaîne de renseignement automatisée : collecte, exploitation, recoupement, bulletin",
+          "tags": [
+            "osint",
+            "renseignement",
+            "sources ouvertes",
+            "veille stratégique",
+            "veille",
+            "cycle du renseignement",
+            "analyste renseignement",
+            "renseignement d'intérêt",
+            "threat intelligence",
+            "cti"
+          ]
+        },
+        {
+          "id": "osint_alertes",
+          "item": "Alerte précoce non supervisée sur 382 000 messages : 17 événements majeurs sur 21 détectés sans mot-clé",
+          "tags": [
+            "alerte précoce",
+            "early warning",
+            "signaux faibles",
+            "détection d'événements",
+            "détection d'anomalies",
+            "surveillance",
+            "monitoring"
+          ]
+        },
+        {
+          "id": "osint_ner",
+          "item": "Extraction d'entités nommées (spaCy) et lexique métier : acteurs, forces, armements, sites",
+          "tags": [
+            "ner",
+            "entités nommées",
+            "reconnaissance d'entités",
+            "extraction d'information",
+            "spacy",
+            "text mining",
+            "fouille de textes"
+          ]
+        },
+        {
+          "id": "osint_graphe",
+          "item": "Analyse de réseaux d'acteurs (NetworkX) : communautés, intermédiaires, liens cachés",
+          "tags": [
+            "analyse de réseaux",
+            "networkx",
+            "graphe de connaissances",
+            "link analysis",
+            "louvain",
+            "détection de communautés",
+            "analyse relationnelle"
+          ]
+        },
+        {
+          "id": "osint_infowar",
+          "item": "Analyse des narratifs et détection de désinformation (log-odds ratio, TF-IDF)",
+          "tags": [
+            "désinformation",
+            "propagande",
+            "guerre de l'information",
+            "lutte informationnelle",
+            "lutte contre les manipulations de l'information",
+            "fake news",
+            "narratifs",
+            "influence",
+            "fact-checking"
+          ]
+        },
+        {
+          "id": "osint_cotation",
+          "item": "Cotation de la fiabilité des sources (code de l'Amirauté, OTAN) et recoupement multi-sources",
+          "tags": [
+            "fiabilité des sources",
+            "recoupement",
+            "vérification",
+            "otan",
+            "nato",
+            "évaluation des sources",
+            "crédibilité"
+          ]
+        },
+        {
+          "id": "osint_multilingue",
+          "item": "Corpus multilingues (russe, ukrainien, anglais) et translittération des noms propres",
+          "tags": [
+            "multilingue",
+            "russe",
+            "ukrainien",
+            "cyrillique",
+            "translittération",
+            "langues étrangères"
           ]
         }
       ]
@@ -550,6 +706,18 @@
             "imagerie satellitaire",
             "imagerie aérienne"
           ]
+        },
+        {
+          "id": "sig_fusion_texte_image",
+          "item": "Fusion texte / imagerie : demandes d'observation satellite issues d'alertes textuelles",
+          "tags": [
+            "fusion de données",
+            "multi-capteurs",
+            "geoint",
+            "renseignement géospatial",
+            "multi-int",
+            "imagerie satellitaire"
+          ]
         }
       ]
     },
@@ -594,6 +762,18 @@
             "macros excel",
             "macro excel",
             "visual basic"
+          ]
+        },
+        {
+          "id": "td_nlp_libs",
+          "item": "spaCy, scikit-learn, NetworkX",
+          "tags": [
+            "spacy",
+            "scikit-learn",
+            "sklearn",
+            "networkx",
+            "nlp",
+            "analyse de réseaux"
           ]
         }
       ]
@@ -719,6 +899,18 @@
             "rgpd",
             "protection des données",
             "données sensibles"
+          ]
+        },
+        {
+          "id": "atout_esprit_critique",
+          "item": "Esprit critique sur la qualité des données et la fiabilité des sources",
+          "tags": [
+            "esprit critique",
+            "fiabilité",
+            "qualité des données",
+            "vérification",
+            "rigueur scientifique",
+            "renseignement"
           ]
         }
       ]

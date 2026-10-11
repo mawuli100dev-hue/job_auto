@@ -18,6 +18,10 @@ from config.letter_examples import (
     FREE_PHRASES,
     LETTER_EXAMPLES,
 )
+from letter.advanced_level import (
+    advanced_level_sentence,
+    needs_advanced_level_sentence,
+)
 from letter.letter_prompt_builder import (
     BANNED_EXPRESSIONS,
 )
@@ -293,6 +297,28 @@ class LetterValidator:
                     "Une candidature spontanée ne doit pas "
                     "prétendre répondre à une offre publiée."
                 )
+
+        # Offre de niveau master ou école d'ingénieurs : la phrase sur
+        # l'écart de niveau est obligatoire.
+        if needs_advanced_level_sentence(
+            context.target,
+            context.availability_frame,
+        ) and not all(
+            contains_whole_expression(
+                expression=expression,
+                normalized_text=normalized_text,
+            )
+            for expression in (
+                "je suis conscient",
+                "écoles d'ingénieurs",
+                "capable de prendre en main",
+            )
+        ):
+            errors.append(
+                "L'offre vise des étudiants de master ou d'école "
+                "d'ingénieurs : la lettre doit contenir mot pour mot « "
+                f"{advanced_level_sentence(context.target.contract_type)} »"
+            )
 
         return errors
 

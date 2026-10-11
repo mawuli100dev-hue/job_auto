@@ -89,6 +89,15 @@ FREE_PHRASES = (
     "de Perpignan, antenne de Carcassonne",
     "Étudiant en troisième année de BUT Science des Données à "
     "l'IUT de Perpignan, antenne de Carcassonne",
+    # Phrase imposée pour les offres de niveau master (letter/advanced_level.py).
+    "Je suis conscient que ce stage s'adresse à des étudiants de M1/M2 "
+    "ou d'écoles d'ingénieurs, alors que je termine ma 3e année de BUT "
+    "Science des Données. Je me sens cependant capable de prendre en main "
+    "ce sujet, et mon parcours me permet de l'affirmer.",
+    "Je suis conscient que cette alternance s'adresse à des étudiants de M1/M2 "
+    "ou d'écoles d'ingénieurs, alors que je termine ma 3e année de BUT "
+    "Science des Données. Je me sens cependant capable de prendre en main "
+    "ce sujet, et mon parcours me permet de l'affirmer.",
 )
 
 

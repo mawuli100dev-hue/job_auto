@@ -43,6 +43,9 @@ class ApplicationTarget:
     # Colonne « source » du CSV (france_travail, pass, linkedin...).
     origin: str = ""
 
+    # Niveau de diplôme visé par l'offre (« Niveau 7 – Bac+5 »...).
+    education_level: str = ""
+
     def build_summary(
         self,
         max_description_length: int = 3500,

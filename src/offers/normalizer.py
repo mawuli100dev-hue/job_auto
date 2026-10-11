@@ -194,6 +194,13 @@ def normalize_published_offer(
             row,
             "source",
         ),
+
+        education_level=_first_non_empty(
+            row,
+            "niveau_diplome",
+            "niveau",
+            "education_level",
+        ),
     )
 
 
@@ -344,5 +351,12 @@ def normalize_spontaneous_target(
         origin=_first_non_empty(
             row,
             "source",
+        ),
+
+        education_level=_first_non_empty(
+            row,
+            "niveau_diplome",
+            "niveau",
+            "education_level",
         ),
     )
