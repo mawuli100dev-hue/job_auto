@@ -24,6 +24,7 @@
   },
   {
     "id": "spirit_digger_osint_nlp",
+    "groupe_exclusif": "nlp",
     "toujours_inclure": false,
     "start_date": "2026-10",
     "titre": "Spirit Digger - Extraction de renseignement sur sources ouvertes (OSINT) par NLP",
@@ -162,13 +163,29 @@
       "shapely",
       "geojson",
       "shapefile",
-      "recherche scientifique"
+      "recherche scientifique",
+      "r",
+      "analyse de formes",
+      "morphométrie",
+      "contours",
+      "données fonctionnelles",
+      "analyse de données fonctionnelles",
+      "b-splines",
+      "fda",
+      "procuste",
+      "moyenne de fréchet",
+      "biologie"
     ],
     "bullets": [
-      "Développement d'un **pipeline de segmentation automatique** combinant SAM2, CLAHE et filtres morphologiques sur des images TIFF d'ossements de lycaon, avec un taux de détection supérieur à 85 %",
+      "Étude des **marques de morsure laissées par des prédateurs sur des ossements** : pipeline de segmentation automatique combinant SAM2, CLAHE et filtres morphologiques sur des images TIFF, avec un taux de détection supérieur à 85 %",
       "Distinction de trois zones fonctionnelles, contour, zone polie et zone broyée, par analyse de luminance LAB et de variance locale",
       "Construction d'une représentation géospatiale associant des shapefiles et GeoJSON avec des mesures métriques Leica sur quatre types d'os longs, à l'aide de GeoPandas et Shapely",
+      "**Analyse de formes en R** sur les contours fermés des marques : lissage par B-splines (package fda) sur une grille commune, alignement par analyse procustéenne et contour moyen par moyenne de Fréchet, indépendant de la pose et de l'échelle",
       "Présentation des résultats au **11th Postgraduate ZooArchaeology Forum**, organisé à l'Université de Lisbonne du 16 au 19 juin 2026"
+    ],
+    "garde_fous": [
+      "Le projet porte sur des marques de morsure laissées par des prédateurs sur des ossements : ne jamais écrire « ossements de lycaon » ni nommer une espèce.",
+      "L'analyse de formes en R applique une démarche proposée par un chercheur : le candidat l'a mise en œuvre, il ne l'a pas conçue. Ne jamais écrire qu'il a créé cette méthode."
     ]
   },
   {
@@ -256,6 +273,7 @@
   },
   {
     "id": "spam_nlp_from_scratch",
+    "groupe_exclusif": "nlp",
     "toujours_inclure": false,
     "start_date": "2025-09",
     "titre": "Détection de spam : NLP et régression logistique from scratch",

@@ -25,6 +25,7 @@ SOURCE_PASS = "pass"
 SOURCE_ENGAGEMENT_JEUNES = "engagement_jeunes"
 SOURCE_LETUDIANT = "letudiant"
 SOURCE_LINKEDIN = "linkedin"
+SOURCE_SFDS = "sfds"
 SOURCE_MANUAL = "manuelles"
 SOURCE_SPONTANEOUS = "spontanees"
 
@@ -35,6 +36,7 @@ SOURCE_FOLDERS = (
     SOURCE_ENGAGEMENT_JEUNES,
     SOURCE_LETUDIANT,
     SOURCE_LINKEDIN,
+    SOURCE_SFDS,
     SOURCE_MANUAL,
     SOURCE_SPONTANEOUS,
 )
@@ -83,6 +85,7 @@ def source_from_value(
         "engagement_jeunes": SOURCE_ENGAGEMENT_JEUNES,
         "letudiant": SOURCE_LETUDIANT,
         "linkedin": SOURCE_LINKEDIN,
+        "sfds": SOURCE_SFDS,
     }
 
     return aliases.get(text, SOURCE_MANUAL)

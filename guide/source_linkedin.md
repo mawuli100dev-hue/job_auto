@@ -45,6 +45,11 @@ $filtre = Dernier data\linkedin\2_filtrees\stage "offres_filtrees_*.csv"
 .\run_pipeline.ps1 -CsvPath $filtre.FullName -TypeCandidature stage -MaxOffers 2
 ```
 
+Les stages de niveau master (Bac+5, M2, école d'ingénieurs écrits dans la description
+copiée) sont mis de côté par le filtre dans `offres_niveau_master_stage_*.csv` : voir
+[etape_filtre.md](etape_filtre.md). LinkedIn ne donne pas de champ « niveau » : seule la
+description compte, d'où l'importance de la copier en entier, partie « Profil » comprise.
+
 Pour l'alternance, remplace `stage` par `alternance` aux étapes 3 et 4.
 
 ## L'étape 2 en détail

@@ -62,16 +62,21 @@ def _normalize(text: object) -> str:
 
 
 def targets_advanced_students(target: ApplicationTarget) -> bool:
-    text = _normalize(
-        " ".join(
-            [
-                target.education_level,
-                target.job_title,
-                target.requested_skills,
-                target.description,
-            ]
-        )
+    return text_targets_advanced_students(
+        target.education_level,
+        target.job_title,
+        target.requested_skills,
+        target.description,
     )
+
+
+def text_targets_advanced_students(*parts: object) -> bool:
+    """
+    Même détection sur des textes bruts (niveau, intitulé, compétences,
+    description) : le filtre l'utilise sur les lignes du CSV.
+    """
+
+    text = _normalize(" ".join(str(part or "") for part in parts))
 
     for pattern in FALSE_POSITIVE_PATTERNS:
         text = re.sub(pattern, " ", text)

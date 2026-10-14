@@ -58,6 +58,11 @@ BANNED_EXPRESSIONS = (
     "grâce à cette expérience",
     "serais ravi",
     "des données similaires",
+    # L'objet de la lettre dit déjà ce que le candidat demande.
+    "propose ma candidature",
+    "proposer ma candidature",
+    # L'écart se dit sans se dévaloriser (voir la règle sur l'écart).
+    "aucune connaissance",
 )
 
 
@@ -311,6 +316,8 @@ STYLE : CELUI DU CANDIDAT
 - Des phrases simples, 35 mots au maximum, avec des verbes d'action. Pas de grands mots, pas de superlatifs.
 - Chaque affirmation sur une compétence s'appuie sur un fait (outil, volume, chiffre, résultat) tiré du CV. Un adjectif sur soi-même (« rigoureux », « autonome ») n'est permis que s'il est suivi du fait qui le montre.
 - Au plus deux phrases consécutives commençant par « Je ».
+- Une activité encore en cours (période « Depuis ... » sans date de fin) s'écrit au présent : « j'encadre des étudiants depuis septembre 2026 », jamais « j'ai encadré ... depuis ».
+- Dans le récit d'un projet, ne souligne pas ce qui n'a pas été fait (« même si X restait à faire ») : ce point relève, au besoin, du paragraphe sur l'écart.
 - Pas de phrase qui commente le candidat (« cela démontre ma capacité à... ») : les faits suffisent.
 - Nom de l'entreprise : écris-le comme un humain, pas en majuscules. Si la description utilise un nom court ou un sigle (exemple : « ACC »), utilise-le.
 - Noms de marques, produits ou clients : écris-les normalement, même si l'offre les met en majuscules (« Peugeot », pas « PEUGEOT »). Garde les sigles tels quels (DS, MES).
@@ -368,13 +375,13 @@ Rédige la lettre de motivation de ce candidat, qui postule à {contract_label}.
 - preuves : pour chaque besoin, l'expérience ou la compétence du CV qui y répond le mieux, le fait précis à citer (outil, méthode, chiffre) ET le point commun avec le besoin (exemple : « croiser 3 sources hétérogènes, comme machines + mesures + MES »). Si rien ne correspond, écris "aucune preuve" : la lettre n'en parlera pas.
 - exigences_couvertes : les exigences explicites de l'offre (outils, langues, niveau d'études) que le CV possède.
 - accroche : un fait concret et spécifique de la description (un produit, un projet, un chiffre, une mission) qui servira à ouvrir la lettre.
-- ecart : ce que la cible demande et que le CV ne montre pas. Pense d'abord au DOMAINE MÉTIER : si aucun projet du CV ne porte sur le secteur de l'entreprise (industrie, production, finance, santé, radiofréquence, milieu marin...) ou sur ses systèmes propres (MES, ERP, capteurs...), c'est un écart, même si tous les outils sont couverts. Puis aux outils et au niveau d'études. Écris "aucun" seulement si le CV couvre vraiment le domaine et les outils. Ne déclare jamais comme manquant un outil présent dans le CV. Les outils de <outils_connus_sans_projet> ne sont pas un manque mais une connaissance sans projet complet : présente-les comme tels.
+- ecart : ce que la cible demande et que le CV ne montre pas. Pense d'abord au DOMAINE MÉTIER : si aucun projet du CV ne porte sur le secteur de l'entreprise (industrie, production, finance, santé, biologie, radiofréquence, milieu marin...) ou sur ses systèmes propres (MES, ERP, capteurs...), c'est un écart, même si tous les outils sont couverts. Puis aux outils et au niveau d'études. Écris "aucun" seulement si le CV couvre vraiment le domaine et les outils. Ne déclare jamais comme manquant un outil présent dans le CV. Les outils de <outils_connus_sans_projet> ne sont pas un manque mais une connaissance sans projet complet : présente-les comme tels. Une MÉTHODE statistique ou de modélisation (clustering, statistique bayésienne, données fonctionnelles ou directionnelles, séries temporelles, analyse de formes...) n'est jamais un écart : le candidat est en BUT Science des Données, parcours Exploration et Modélisation Statistique, et connaît ces méthodes. L'écart porte sur le domaine métier, un logiciel précis absent du CV ou le niveau d'études.
 
 ÉTAPE 2 : RÉDACTION, en 5 à 7 paragraphes, avec la logique des lettres du candidat
-1. Accroche : ouvre sur le fait choisi dans "accroche" (une image concrète du problème que traite l'entreprise, ou ce qui convainc dans l'offre), cité précisément. Relie-le au candidat, puis dis qui il est (formation) et ce qu'il demande (le contrat). Ne commence pas par « Je », ni par « Actuellement étudiant ».
+1. Accroche : ouvre sur le fait choisi dans "accroche" (une image concrète du problème que traite l'entreprise, ou ce qui convainc dans l'offre), cité précisément. Relie-le au candidat, puis dis qui il est (formation), une seule fois : si la phrase sur le niveau master cite déjà le BUT, ne répète pas la formation. N'écris pas qu'il propose sa candidature : l'objet le dit déjà. Ne commence pas par « Je », ni par « Actuellement étudiant ».
 2. et 3. Un projet par paragraphe, en commençant par celui qui utilise le plus d'outils exigés par l'offre. Ce que le candidat a fait, avec quels outils, avec les chiffres du CV. Termine par un pont explicite vers une mission nommée dans l'offre.
-4. Si "ecart" n'est pas "aucun" : un paragraphe honnête qui nomme l'écart simplement et dit comment le candidat le comblera, en s'appuyant sur ce qu'il sait déjà faire. Sinon, une autre preuve ou les compétences exigées par l'offre que le CV possède (outils, langue avec son niveau exact).
-5. Ce qui rend le candidat fiable au quotidien, appuyé sur un fait du CV ou du parcours antérieur, puis sa disponibilité et sa mobilité (prêt à s'installer dans la ville de l'offre si elle est connue).
+4. Si "ecart" n'est pas "aucun" : un paragraphe honnête qui nomme l'écart simplement, en une phrase et sans longue liste de lacunes, et dit comment le candidat le comblera, en s'appuyant sur ce qu'il sait déjà faire (exemple : « Je sais qu'il me reste beaucoup à apprendre en biologie, et je suis prêt à mener la revue de littérature nécessaire pour monter en compétence rapidement. »). Sinon, une autre preuve ou les compétences exigées par l'offre que le CV possède (outils, langue avec son niveau exact).
+5. Ce qui rend le candidat fiable au quotidien, appuyé sur un fait du CV ou du parcours antérieur, puis sa disponibilité et sa mobilité. Le candidat habite à {LETTER_PROFILE.city} : n'écris jamais qu'il est déjà installé ailleurs. Si l'offre est dans une autre ville, il est prêt à s'y installer ; si elle est proche, ne parle pas de déménagement.
 6. Une phrase simple qui propose un échange, comme dans les modèles.
 
 {self._build_rules(context)}

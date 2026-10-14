@@ -16,7 +16,7 @@
     CV, la lettre, le dossier PDF compressé, et met à jour le registre.
 
     Sources : france_travail, la_bonne_alternance (alternance seulement),
-    pass, engagement_jeunes, letudiant. LinkedIn n'est pas inclus : ses
+    pass, engagement_jeunes, letudiant, sfds (stage seulement). LinkedIn n'est pas inclus : ses
     offres demandent l'étape manuelle de completer_offres.py.
 
     Le déroulé complet est enregistré dans data\logs\.
@@ -57,14 +57,16 @@ param(
         "la_bonne_alternance",
         "pass",
         "engagement_jeunes",
-        "letudiant"
+        "letudiant",
+        "sfds"
     )]
     [string[]]$Sources = @(
         "france_travail",
         "la_bonne_alternance",
         "pass",
         "engagement_jeunes",
-        "letudiant"
+        "letudiant",
+        "sfds"
     ),
 
     [ValidateSet("alternance", "stage")]
@@ -110,28 +112,35 @@ $Debut = Get-Date
 $Collecteurs = @{
     "france_travail" = @{
         Script     = "src\collect_offers.py"
-        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", $Mots, "--max-anciennete-jours", "14")
+        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", $Mots, "--max-anciennete-jours", "15")
         Types      = @("alternance", "stage")
     }
     "la_bonne_alternance" = @{
         Script     = "src\collect_offers_lba.py"
-        Arguments  = @("--type-candidature", "alternance", "--romes", "M1419,M1403,M1805,M1802,M1810", "--max-anciennete-jours", "30")
+        Arguments  = @("--type-candidature", "alternance", "--romes", "M1419,M1403,M1805,M1802,M1810", "--max-anciennete-jours", "15")
         Types      = @("alternance")
     }
     "pass" = @{
         Script     = "src\collect_offers_pass.py"
-        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", "data,$Mots", "--max-anciennete-jours", "14")
+        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", "data,$Mots", "--max-anciennete-jours", "15")
         Types      = @("alternance", "stage")
     }
     "engagement_jeunes" = @{
         Script     = "src\collect_offers_engagement_jeunes.py"
-        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", "data,$Mots", "--max-anciennete-jours", "14")
+        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", "data,$Mots", "--max-anciennete-jours", "15")
         Types      = @("alternance", "stage")
     }
     "letudiant" = @{
         Script     = "src\collect_offers_letudiant.py"
-        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", "data,$Mots", "--max-anciennete-jours", "14")
+        Arguments  = @("--type-candidature", "{TYPE}", "--keywords-list", "data,$Mots", "--max-anciennete-jours", "15")
         Types      = @("alternance", "stage")
+    }
+    # Société Française de Statistique : une quinzaine de stages seulement,
+    # tous lus ; 30 jours pour ne manquer aucune offre encore ouverte.
+    "sfds" = @{
+        Script     = "src\collect_offers_sfds.py"
+        Arguments  = @("--type-candidature", "stage", "--max-anciennete-jours", "30")
+        Types      = @("stage")
     }
 }
 
@@ -225,6 +234,8 @@ try {
                 Brutes  = 0
                 Filtre  = $null
                 Offres  = 0
+                Master  = 0
+                FichierMaster = $null
                 Statut  = ""
             }
 
@@ -273,6 +284,19 @@ try {
             $lot.Filtre = $filtre.FullName
             $lot.Offres = Get-NombreLignes $filtre.FullName
 
+            # Stages de niveau master : mis de côté par le filtre, jamais
+            # générés ici. Le candidat les parcourt et choisit lui-même.
+            if ($type -eq "stage") {
+                $master = Get-FichierRecent `
+                    -Dossier (Join-Path $ProjectRoot "data\$source\2_filtrees\$type") `
+                    -Motif "offres_niveau_master_*.csv"
+
+                if ($null -ne $master) {
+                    $lot.Master = Get-NombreLignes $master.FullName
+                    $lot.FichierMaster = $master.FullName
+                }
+            }
+
             if ($MaxOffresParLot -gt 0 -and $lot.Offres -gt $MaxOffresParLot) {
                 $lot.Offres = $MaxOffresParLot
             }
@@ -289,7 +313,19 @@ try {
 
     Write-Titre "Récapitulatif de la phase 1"
 
-    $Lots | Format-Table Source, Type, Brutes, Offres, Statut -AutoSize | Out-Host
+    $Lots | Format-Table Source, Type, Brutes, Offres, Master, Statut -AutoSize | Out-Host
+
+    $lotsMaster = @($Lots | Where-Object { $_.Master -gt 0 })
+
+    if ($lotsMaster.Count -gt 0) {
+        Write-Host "Stages de niveau master mis de côté (non générés, à parcourir) :" -ForegroundColor Cyan
+
+        foreach ($lot in $lotsMaster) {
+            Write-Host "  $($lot.Source) : $($lot.Master) offre(s) -> $($lot.FichierMaster)"
+        }
+
+        Write-Host ""
+    }
 
     $aGenerer = @($Lots | Where-Object { $_.Statut -eq "prêt" })
     $total = ($aGenerer | Measure-Object -Property Offres -Sum).Sum
@@ -345,7 +381,7 @@ try {
 
     Write-Titre "Terminé"
 
-    $Lots | Format-Table Source, Type, Brutes, Offres, Statut -AutoSize | Out-Host
+    $Lots | Format-Table Source, Type, Brutes, Offres, Master, Statut -AutoSize | Out-Host
 
     Write-Host "Dossiers à envoyer : data\<source>\3_candidatures\$($Debut.ToString('yyyy-MM-dd'))\"
 }

@@ -141,6 +141,7 @@ FIELDNAMES = [
     "date_creation",
     "salaire",
     "experience_exigee",
+    "niveau_diplome",
     "competences",
     "description",
     "url",
@@ -235,6 +236,19 @@ def _normalize_offer(raw_offer: dict) -> dict:
     if not entreprise_nom or not entreprise_nom.strip():
         entreprise_nom = "Non precise"
 
+    # Niveau de formation demandé (« Bac+5 et plus ou équivalents »),
+    # exigé ou souhaité : le filtre s'en sert pour mettre de côté les
+    # stages de niveau master.
+    exigences = {"E": "exigé", "S": "souhaité"}
+
+    niveau_diplome = " ; ".join(
+        f"{formation['niveauLibelle']} ({exigences[formation.get('exigence')]})"
+        if formation.get("exigence") in exigences
+        else formation["niveauLibelle"]
+        for formation in raw_offer.get("formations", []) or []
+        if formation.get("niveauLibelle")
+    )
+
     return {
         "id": raw_offer.get("id", ""),
         "source": "france_travail",
@@ -248,6 +262,7 @@ def _normalize_offer(raw_offer: dict) -> dict:
         "date_creation": raw_offer.get("dateCreation", ""),
         "salaire": salaire.get("libelle", ""),
         "experience_exigee": raw_offer.get("experienceLibelle", ""),
+        "niveau_diplome": niveau_diplome,
         "competences": competences,
         "description": description,
         "url": origine.get("urlOrigine", ""),

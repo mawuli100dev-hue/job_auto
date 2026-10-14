@@ -64,6 +64,7 @@ from paths import (
     source_from_value,
     source_stage_dir,
 )
+from letter.advanced_level import text_targets_advanced_students
 from domain.availability import (
     STAGE_WINDOW,
     detect_start_date,
@@ -699,7 +700,16 @@ RELEVANT_DESCRIPTION_GROUPS = (
     ("statistique", "statistiques", "econometrie", "modelisation statistique"),
     ("etl", "data engineering", "pipeline de donnees", "big data"),
     ("data science", "data scientist", "data analyst", "data analyse"),
-    ("langage r", "rstudio", "sas"),
+    ("langage r", "rstudio", "sas", "sous r", "logiciel r", "package r"),
+    # Statistique académique (offres de laboratoires, SFdS, PASS...).
+    (
+        "biostatistique", "biostatistiques", "biostatisticien", "biostat",
+        "epidemiologie", "analyse de survie", "inference", "inference statistique",
+        "bayesien", "bayesienne", "stochastique", "stochastiques",
+        "modelisation mathematique", "modele mixte", "modeles mixtes",
+        "classification non supervisee", "clustering", "series temporelles",
+        "apprentissage statistique",
+    ),
 )
 
 MIN_RELEVANT_DESCRIPTION_GROUPS = 2
@@ -716,6 +726,55 @@ DATA_DOMAIN_TERMS = (
     "numerique",
     "etudes",
 )
+
+
+# Sources dont toutes les offres relèvent de la statistique ou de la data
+# (Société Française de Statistique) : les règles sur l'intitulé et la
+# pertinence data ne s'y appliquent pas. Les autres règles (défense, offres
+# réservées, stages trop tôt, doublons) restent appliquées.
+TRUSTED_DATA_SOURCES = {
+    "sfds",
+}
+
+
+def is_trusted_source(
+    row: dict,
+) -> bool:
+    return str(row.get("source", "")).strip().lower() in TRUSTED_DATA_SOURCES
+
+
+# Stages de niveau master (M1/M2, école d'ingénieurs) : ils ne sont pas
+# générés automatiquement mais mis de côté dans un fichier à part
+# (offres_niveau_master_*.csv), que le candidat parcourt pour choisir
+# ceux qui valent une candidature. L'alternance n'est pas concernée :
+# le master est le diplôme que le candidat y préparera.
+#
+# Engagement Jeunes indique le niveau dans niveau_diplome : « postgraduate
+# degree » (Bac+4/5), « bachelor degree » (Bac+3), « associate degree »
+# (Bac+2). Ce niveau fait foi. Ailleurs, le niveau, l'intitulé et la
+# description sont lus par la même détection que la phrase de la lettre
+# sur l'écart de niveau (letter/advanced_level.py).
+MASTER_LEVEL_VALUES = {"postgraduate degree"}
+BUT_LEVEL_VALUES = {"bachelor degree", "associate degree"}
+
+
+def is_master_level(
+    row: dict,
+) -> bool:
+    level = str(row.get("niveau_diplome", "")).strip().lower()
+
+    if level in MASTER_LEVEL_VALUES:
+        return True
+
+    if level in BUT_LEVEL_VALUES:
+        return False
+
+    return text_targets_advanced_students(
+        row.get("niveau_diplome", ""),
+        row.get("intitule", ""),
+        row.get("competences", ""),
+        row.get("description", ""),
+    )
 
 
 def is_data_relevant(
@@ -906,6 +965,7 @@ def filter_csv(
     exclude_early_stages: bool = True,
     require_data_relevance: bool = True,
     remove_duplicates: bool = True,
+    set_aside_master: bool = True,
 ) -> tuple[list[dict], list[str], dict]:
     """
     Lit le CSV et applique les filtres.
@@ -1016,14 +1076,22 @@ def filter_csv(
             removed_defense.append(
                 f"{row.get('intitule', '')} - {row.get('entreprise', '')}"
             )
-        elif exclude_titles and is_excluded_title(
-            row=row,
-            extra_terms=extra_title_terms,
+        elif (
+            exclude_titles
+            and not is_trusted_source(row)
+            and is_excluded_title(
+                row=row,
+                extra_terms=extra_title_terms,
+            )
         ):
             removed_titles.append(
                 row.get("intitule", "")
             )
-        elif require_data_relevance and not is_data_relevant(row):
+        elif (
+            require_data_relevance
+            and not is_trusted_source(row)
+            and not is_data_relevant(row)
+        ):
             removed_irrelevant.append(
                 f"{row.get('intitule', '')} - {row.get('entreprise', '')}"
             )
@@ -1082,6 +1150,13 @@ def filter_csv(
 
         kept_rows = unique_rows
 
+    # Stages de niveau master : mis de côté, pas écartés.
+    master_rows = []
+
+    if set_aside_master and candidature_type == TYPE_CANDIDATURE_STAGE:
+        master_rows = [row for row in kept_rows if is_master_level(row)]
+        kept_rows = [row for row in kept_rows if not is_master_level(row)]
+
     statistics = {
         "total": len(rows),
         "removed_wrong_type": removed_wrong_type,
@@ -1091,6 +1166,7 @@ def filter_csv(
         "removed_defense": removed_defense,
         "removed_reserved": removed_reserved,
         "removed_early": removed_early,
+        "master_rows": master_rows,
         "removed_irrelevant": removed_irrelevant,
         "removed_duplicates": removed_duplicates,
         "kept": len(kept_rows),
@@ -1109,11 +1185,15 @@ def save_filtered(
     candidature_type: str,
     source: str,
     base_dir: Path | None = None,
+    prefix: str = "offres_filtrees",
 ) -> str:
     """
     Enregistre les offres filtrées dans le dossier de leur source :
 
     data/<source>/2_filtrees/<type>/YYYY-MM-DD/
+
+    Avec prefix="offres_niveau_master" : les stages de niveau master
+    mis de côté, dans le même dossier.
     """
 
     if base_dir is None:
@@ -1138,7 +1218,7 @@ def save_filtered(
     )
 
     filename = (
-        f"offres_filtrees_{candidature_type}_"
+        f"{prefix}_{candidature_type}_"
         f"{today}_{timestamp}.csv"
     )
 
@@ -1265,6 +1345,15 @@ def build_argument_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
+        "--garder-tous-niveaux",
+        action="store_true",
+        help=(
+            "Garde les stages de niveau master dans le fichier filtré, "
+            "au lieu de les mettre de côté dans offres_niveau_master_*.csv."
+        ),
+    )
+
+    parser.add_argument(
         "--garder-tous-intitules",
         action="store_true",
         help=(
@@ -1341,6 +1430,7 @@ def main() -> None:
         exclude_early_stages=not args.garder_stages_precoces,
         require_data_relevance=not args.sans_filtre_data,
         remove_duplicates=not args.garder_doublons,
+        set_aside_master=not args.garder_tous_niveaux,
     )
 
     print("\n=== Résultat ===")
@@ -1379,6 +1469,10 @@ def main() -> None:
     print(
         f"Écartées (doublons)            : "
         f"{len(statistics['removed_duplicates'])} offre(s)"
+    )
+    print(
+        f"Mises de côté (niveau master)  : "
+        f"{len(statistics['master_rows'])} offre(s)"
     )
     print(
         f"Conservées                     : "
@@ -1445,6 +1539,33 @@ def main() -> None:
         f"\nFichier filtré enregistré : "
         f"{filepath}"
     )
+
+    # Toujours écrit pour un stage, même vide : run_all_sources.ps1 lit
+    # le plus récent, qui doit être celui de ce filtrage.
+    if (
+        args.type_candidature == TYPE_CANDIDATURE_STAGE
+        and not args.garder_tous_niveaux
+    ):
+        master_path = save_filtered(
+            kept_rows=statistics["master_rows"],
+            fieldnames=fieldnames,
+            candidature_type=args.type_candidature,
+            source=source,
+            prefix="offres_niveau_master",
+        )
+
+        if statistics["master_rows"]:
+            print("\nStages de niveau master mis de côté (à parcourir) :")
+
+            for row in statistics["master_rows"]:
+                print(
+                    f"  - {row.get('intitule', '')} - "
+                    f"{row.get('entreprise', '')} ({row.get('lieu', '')})"
+                )
+
+        print(
+            f"\nStages de niveau master : {master_path}"
+        )
 
 
 if __name__ == "__main__":

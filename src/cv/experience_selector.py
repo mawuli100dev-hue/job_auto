@@ -101,11 +101,30 @@ class ExperienceSelector:
             )
         ]
 
-        ordered_non_pinned_ids = [
-            item["id"]
-            for item in diagnostics
-            if item["id"] not in pinned_ids
-        ]
+        # Deux expériences du même « groupe_exclusif » (deux projets NLP,
+        # par exemple) ne figurent jamais ensemble sur le CV : seule la
+        # mieux notée est retenue, et la place libérée revient à la
+        # suivante du classement.
+        used_groups = {
+            experiences_by_id[experience_id].get("groupe_exclusif")
+            for experience_id in pinned_ids
+        } - {None, ""}
+
+        ordered_non_pinned_ids = []
+
+        for item in diagnostics:
+            if item["id"] in pinned_ids:
+                continue
+
+            group = experiences_by_id[item["id"]].get("groupe_exclusif")
+
+            if group and group in used_groups:
+                continue
+
+            if group:
+                used_groups.add(group)
+
+            ordered_non_pinned_ids.append(item["id"])
 
         remaining_slots = max(
             0,

@@ -17,6 +17,7 @@ Toutes les commandes se lancent dans **PowerShell**, depuis le dossier du projet
 | [source_pass.md](source_pass.md) | PASS, fonction publique : alternance et stage |
 | [source_engagement_jeunes.md](source_engagement_jeunes.md) | Engagement Jeunes : alternance et stage |
 | [source_letudiant.md](source_letudiant.md) | L'Étudiant Jobs & Stages : alternance et stage |
+| [source_sfds.md](source_sfds.md) | SFdS, Société Française de Statistique : stage |
 | [source_linkedin.md](source_linkedin.md) | LinkedIn, par les alertes e-mail Gmail : alternance et stage |
 | [source_manuelles.md](source_manuelles.md) | Offres ajoutées à la main (LinkedIn, Apify, sites d'entreprises...) |
 | [source_spontanees.md](source_spontanees.md) | Candidatures spontanées |
@@ -75,7 +76,7 @@ PASS, Engagement Jeunes et L'Étudiant ne demandent aucune clé.
 ## Tout lancer d'un coup
 
 `run_all_sources.ps1` enchaîne, source après source (France Travail, La Bonne
-Alternance, PASS, Engagement Jeunes, L'Étudiant ; alternance et stage) :
+Alternance, PASS, Engagement Jeunes, L'Étudiant, SFdS ; alternance et stage) :
 
 1. **Phase 1, gratuite** : collecte puis filtre de chaque source. Un récapitulatif
    affiche le nombre d'offres prêtes et le **coût estimé**, puis demande confirmation.
@@ -104,6 +105,10 @@ conda activate job_auto
 | `-SansConfirmation` | Lance la génération sans demander (lancement planifié) |
 | `-Mots "..."`, `-Exclues "..."` | Mots-clés et entreprises exclues (défaut : ceux de ce guide) |
 
+- Les **stages de niveau master** ne sont pas générés : le récapitulatif donne leur
+  nombre (colonne `Master`) et le fichier `offres_niveau_master_*.csv` de chaque source.
+  Parcours-les et génère toi-même ceux qui valent le coup (voir
+  [etape_filtre.md](etape_filtre.md)).
 - LinkedIn n'est pas inclus : ses offres demandent l'étape manuelle de
   `completer_offres.py` (voir [source_linkedin.md](source_linkedin.md)).
 - La phase 1 prend du temps : quelques minutes par source, plus pour Engagement Jeunes
@@ -129,6 +134,7 @@ data\
 ├── pass\
 ├── engagement_jeunes\
 ├── letudiant\
+├── sfds\
 ├── linkedin\                              (+ 0_a_completer\ : offres des alertes à compléter)
 ├── manuelles\                             offres ajoutées à la main
 ├── spontanees\                            candidatures spontanées

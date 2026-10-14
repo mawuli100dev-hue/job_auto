@@ -189,6 +189,28 @@
           ]
         },
         {
+          "id": "stats_formes",
+          "item": "Analyse de formes en R : contours par B-splines (fda), Procuste, moyenne de Fréchet",
+          "tags": [
+            "analyse de formes",
+            "forme",
+            "formes",
+            "contour",
+            "contours",
+            "morphométrie",
+            "morphometrie",
+            "données fonctionnelles",
+            "analyse de données fonctionnelles",
+            "functional data",
+            "b-splines",
+            "splines",
+            "procuste",
+            "procrustes",
+            "fréchet",
+            "shape analysis"
+          ]
+        },
+        {
           "id": "stats_modelisation",
           "item": "Modélisation statistique : régression, classification",
           "tags": [
