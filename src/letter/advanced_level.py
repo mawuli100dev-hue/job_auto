@@ -51,6 +51,20 @@ FALSE_POSITIVE_PATTERNS = (
 ACCEPTS_BUT_LEVEL_PATTERNS = (
     r"bac\s*\+\s*[23]\b",
     r"niveau\s*6\b",
+    # « DUT, BUT, Licence 3, licence pro, Master 1... » : le niveau du
+    # candidat figure dans la liste des diplômes acceptés.
+    r"\bdut\b",
+    # « but » est aussi un nom (« dans le but de ») et un mot anglais :
+    # il n'est reconnu qu'à côté d'un autre diplôme, suivi d'une année ou
+    # d'une spécialité, ou après « étudiant en ».
+    r"\bbut\s*(,|/|ou|et)\s*(licence|l3|bachelor|master|bac|dut)",
+    r"(licence|l3|bachelor|bac\s*\+\s*\d)\s*(,|/|ou|et)\s*but\b",
+    r"\bbut\s*(\d|sd\b|stid\b|science|informatique)",
+    r"\b(etudiante?s?|niveau|diplome|formation)\s+(en\s+|de\s+)?but\b",
+    r"\blicence\s*(3|pro|professionnelle|generale)\b",
+    r"\bl3\b",
+    # « bachelor's +4/5 » désigne un master : non reconnu.
+    r"\bbachelor\b(?!\s*'?\s*s?\s*\+\s*[45])",
 )
 
 
